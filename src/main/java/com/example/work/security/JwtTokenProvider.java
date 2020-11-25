@@ -71,6 +71,10 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
+    public String getRole(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("role", String.class);
+    }
+
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader(authHeader);
     }

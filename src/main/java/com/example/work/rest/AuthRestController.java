@@ -30,7 +30,7 @@ public class AuthRestController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody Credentials credentials) {
+    public ResponseEntity<?> login(@RequestBody Credentials credentials) {
         try {
             var email = credentials.getEmail();
             authenticationManager.authenticate(
@@ -41,6 +41,7 @@ public class AuthRestController {
             var response = new HashMap<>();
             response.put("email", credentials.getEmail());
             response.put("token", token);
+            response.put("role", jwtTokenProvider.getRole(token));
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);
