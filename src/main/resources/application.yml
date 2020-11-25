@@ -1,4 +1,9 @@
-app:
-  id: 4d70b745-87c4-4b79-9729-e223c46c3413
-  scopes: User.Read, Calendars.Read, User.ReadBasic.All, User.Read.All, GroupMember.Read.All
-#  Group.Read.All, Directory.Read.All
+spring:
+  datasource:
+    username: 'root'
+    password: 'root'
+    url: 'jdbc:mysql://localhost:3333/students'
+jwt:
+  expiration: 604800
+  header: 'Authorization'
+  secret: 'super_secret_key_yes'

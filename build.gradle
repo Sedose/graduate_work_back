@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'org.springframework.boot' version '2.4.0'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'java'
 }
@@ -18,18 +18,16 @@ repositories {
 }
 
 dependencies {
-//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa',
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest',
-            'org.springframework.boot:spring-boot-starter-security',
+    implementation 'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.boot:spring-boot-starter-web',
-            'org.springframework.data:spring-data-rest-hal-explorer',
-            'org.springframework.session:spring-session-core',
-            'com.microsoft.azure:msal4j:1.4.0',
-            'com.microsoft.graph:microsoft-graph:1.6.0',
-            'org.slf4j:slf4j-nop:1.8.0-beta4'
+            'org.springframework.boot:spring-boot-starter-data-jdbc',
+            'mysql:mysql-connector-java:8.0.22',
+            'io.jsonwebtoken:jjwt:0.9.1',
+            'org.bouncycastle:bcprov-jdk15on:1.67',
+            'javax.xml.bind:jaxb-api:2.3.1'
 
     compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor',
             'org.projectlombok:lombok'
 
