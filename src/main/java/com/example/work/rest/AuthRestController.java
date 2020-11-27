@@ -39,8 +39,7 @@ public class AuthRestController {
             var user = userRepository.findByEmail(email).orElseThrow(SomeEntityNotFoundException::new);
             var token = jwtTokenProvider.createToken(credentials.getEmail(), user.getRole().name());
             var response = new HashMap<>();
-            response.put("email", credentials.getEmail());
-            response.put("token", token);
+            response.put("accessToken", token);
             response.put("role", jwtTokenProvider.getRole(token));
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
