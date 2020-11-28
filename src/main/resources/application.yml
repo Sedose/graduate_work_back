@@ -2,7 +2,9 @@ spring:
   datasource:
     username: 'root'
     password: 'root'
+#    password: ''
     url: 'jdbc:mysql://localhost:3333/students'
+#    url: 'jdbc:mysql://2.tcp.ngrok.io:10083/students'
 jwt:
   expiration: 604800
   header: 'Authorization'
