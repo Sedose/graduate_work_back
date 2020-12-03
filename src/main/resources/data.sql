@@ -1,10 +1,11 @@
+DROP TABLE IF EXISTS lessons_students;
+DROP TABLE IF EXISTS lessons_student_groups;
 DROP TABLE IF EXISTS student_groups;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS university_employees;
 DROP TABLE IF EXISTS user_coordinates;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS scheduled_lessons;
-DROP TABLE IF EXISTS scheduled_lessons_student_groups;
+DROP TABLE IF EXISTS lessons;
 
 -- <Юзеры, кто логинятся на сайт. Для авторизации, аутентификации.>
 CREATE TABLE users (
@@ -50,18 +51,26 @@ CREATE TABLE student_groups (
 
 CREATE TABLE lessons (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP NOT NULL,
-    description TEXT NOT NULL,
     latitude DOUBLE,
-    longitude DOUBLE
+    longitude DOUBLE,
+    name VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE lessons_student_groups (
     lesson_id INT UNSIGNED,
     student_group_id INT UNSIGNED,
     PRIMARY KEY (lesson_id, student_group_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE lessons_students (
+    lesson_id INT UNSIGNED,
+    student_id INT UNSIGNED,
+    status VARCHAR(255), -- e.g. ATTENDED | LEFT_BEFORE_LESSON_END
+    PRIMARY KEY (lesson_id, student_id)
 ) ENGINE=InnoDB;
 
 ALTER TABLE student_groups
@@ -87,6 +96,14 @@ ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE lessons_student_groups
 ADD FOREIGN KEY (student_group_id) REFERENCES student_groups(id)
+ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE lessons_students
+ADD FOREIGN KEY (lesson_id) REFERENCES lessons(id)
+ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE lessons_students
+ADD FOREIGN KEY (student_id) REFERENCES students(id)
 ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE user_coordinates
