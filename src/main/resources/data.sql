@@ -6,6 +6,8 @@ DROP TABLE IF EXISTS university_employees;
 DROP TABLE IF EXISTS user_coordinates;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS lessons;
+DROP TABLE IF EXISTS university;
+DROP TABLE IF EXISTS department;
 
 -- <Юзеры, кто логинятся на сайт. Для авторизации, аутентификации.>
 CREATE TABLE users (
@@ -45,6 +47,7 @@ CREATE TABLE student_groups (
     name VARCHAR(255) NOT NULL,
     group_leader_id INT UNSIGNED,
     group_curator_id INT UNSIGNED,
+    department_id INT UNSIGNED,
     course_number INT UNSIGNED NOT NULL,
     specialty_name VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;
@@ -57,6 +60,7 @@ CREATE TABLE lessons (
     longitude DOUBLE,
     name VARCHAR(255) NOT NULL,
     subject VARCHAR(255) NOT NULL,
+    type VARCHAR(255),
     description TEXT NOT NULL
 ) ENGINE=InnoDB;
 
@@ -72,6 +76,23 @@ CREATE TABLE lessons_students (
     status VARCHAR(255), -- e.g. ATTENDED | LEFT_BEFORE_LESSON_END
     PRIMARY KEY (lesson_id, student_id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE university (
+    id INT UNSIGNED PRIMARY KEY,
+    city_id INT UNSIGNED,
+    name VARCHAR(255)
+) ENGINE=InnoDB;
+
+CREATE TABLE department (
+    id INT UNSIGNED PRIMARY KEY,
+    university_id INT UNSIGNED,
+    name VARCHAR(255),
+    description VARCHAR(255)
+) ENGINE=InnoDB;
+
+ALTER TABLE student_groups
+ADD FOREIGN KEY (department_id) REFERENCES department(id)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ALTER TABLE student_groups
 ADD FOREIGN KEY (group_leader_id) REFERENCES students(id)
@@ -159,10 +180,17 @@ INSERT INTO users VALUES(
     'ACTIVE'
 );
 
+INSERT INTO university VALUES
+(1, 1, 'KhPI');
+
+INSERT INTO department VALUES
+(1, 1, 'KN', 'KN description'),
+(2, 1, 'IT', 'IT description');
+
 INSERT INTO student_groups VALUES
-(1, 'KN-217a', NULL, NULL, 3, 'KN'),
-(2, 'KN-222f', NULL, NULL, 5, 'PI'),
-(3, 'KN-111e', NULL, NULL, 2, 'KN');
+(1, 'KN-217a', NULL, NULL, 1, 3, 'KN'),
+(2, 'KN-222f', NULL, NULL, 1, 5, 'PI'),
+(3, 'KN-111e', NULL, NULL, 1, 2, 'KN');
 
 INSERT INTO students VALUES
 (1, 1),
