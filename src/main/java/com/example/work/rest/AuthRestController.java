@@ -37,10 +37,11 @@ public class AuthRestController {
                     new UsernamePasswordAuthenticationToken(email, credentials.getPassword())
             );
             var user = userRepository.findByEmail(email).orElseThrow(SomeEntityNotFoundException::new);
-            var token = jwtTokenProvider.createToken(credentials.getEmail(), user.getRole().name());
-            var response = new HashMap<>();
+            var token = jwtTokenProvider.createToken(user);
+            var response = new HashMap<String, String>();
+            response.put("userEmail", user.getEmail());
             response.put("accessToken", token);
-            response.put("role", jwtTokenProvider.getRole(token));
+            response.put("role", user.getRole().name());
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             return new ResponseEntity<>("Invalid email/password combination", HttpStatus.FORBIDDEN);

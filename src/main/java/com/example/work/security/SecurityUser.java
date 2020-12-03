@@ -1,23 +1,18 @@
 package com.example.work.security;
 
 import com.example.work.entity.Status;
-import com.example.work.entity.User;
-import lombok.Value;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.example.work.entity.UserEntity;
+import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
-import java.util.List;
+import java.util.Collection;
 
-@Value
-public class SecurityUser implements UserDetails {
-    String username;
-    String password;
-    List<SimpleGrantedAuthority> authorities;
-    boolean isActive;
+@Getter
+public class SecurityUser extends User {
 
-    public List<SimpleGrantedAuthority> getAuthorities() {
-        return authorities;
-    }
+    private Long id;
+    private boolean isActive;
 
     @Override
     public boolean isAccountNonExpired() {
@@ -39,15 +34,19 @@ public class SecurityUser implements UserDetails {
         return isActive;
     }
 
-    public static UserDetails fromUser(User user) {
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getStatus().equals(Status.ACTIVE),
-                user.getRole().getAuthorities()
+    public SecurityUser(String username, String password, Collection<? extends GrantedAuthority> authorities, Long id, boolean isActive) {
+        super(username, password, authorities);
+        this.id = id;
+        this.isActive = isActive;
+    }
+
+    public static SecurityUser fromUser(UserEntity userEntity) {
+        return new SecurityUser(
+                userEntity.getEmail(),
+                userEntity.getPassword(),
+                userEntity.getRole().getAuthorities(),
+                userEntity.getId(),
+                userEntity.getStatus().equals(Status.ACTIVE)
         );
     }
 }

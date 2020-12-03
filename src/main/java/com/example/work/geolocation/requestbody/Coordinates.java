@@ -1,4 +1,4 @@
-package com.example.work.entity;
+package com.example.work.geolocation.requestbody;
 
 import lombok.Value;
 

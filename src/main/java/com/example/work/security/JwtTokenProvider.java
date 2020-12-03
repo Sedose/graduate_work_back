@@ -1,5 +1,6 @@
 package com.example.work.security;
 
+import com.example.work.entity.UserEntity;
 import com.example.work.exception.JwtAuthException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -40,9 +41,8 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String username, String role) {
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("role", role);
+    public String createToken(UserEntity userEntity) {
+        Claims claims = Jwts.claims().setSubject(userEntity.getEmail());
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInInMilliseconds * 1000);
         return Jwts.builder()

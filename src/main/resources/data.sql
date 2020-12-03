@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS student_groups;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS university_employees;
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS user_coordinates;
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS scheduled_lessons;
 DROP TABLE IF EXISTS scheduled_lessons_student_groups;
 
@@ -20,7 +20,7 @@ CREATE TABLE users (
 
 -- <Чисто для Эдгара>
 CREATE TABLE user_coordinates (
-    id INT UNSIGNED NOT NULL PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL PRIMARY KEY,
     latitude DOUBLE NOT NULL,
     longitude DOUBLE NOT NULL
 );
@@ -48,18 +48,21 @@ CREATE TABLE student_groups (
     specialty_name VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE scheduled_lessons (
+CREATE TABLE lessons (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP NOT NULL,
-    description TEXT NOT NULL
-);
+    description TEXT NOT NULL,
+    latitude DOUBLE,
+    longitude DOUBLE
+) ENGINE=InnoDB;
 
-CREATE TABLE scheduled_lessons_student_groups (
-    scheduled_lesson_id INT UNSIGNED,
-    student_group_id INT UNSIGNED
-);
+CREATE TABLE lessons_student_groups (
+    lesson_id INT UNSIGNED,
+    student_group_id INT UNSIGNED,
+    PRIMARY KEY (lesson_id, student_group_id)
+) ENGINE=InnoDB;
 
 ALTER TABLE student_groups
 ADD FOREIGN KEY (group_leader_id) REFERENCES students(id)
@@ -77,8 +80,17 @@ ALTER TABLE university_employees
 ADD FOREIGN KEY (id) REFERENCES users(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+
+ALTER TABLE lessons_student_groups
+ADD FOREIGN KEY (lesson_id) REFERENCES lessons(id)
+ON UPDATE CASCADE ON DELETE CASCADE;
+
+ALTER TABLE lessons_student_groups
+ADD FOREIGN KEY (student_group_id) REFERENCES student_groups(id)
+ON UPDATE CASCADE ON DELETE CASCADE;
+
 ALTER TABLE user_coordinates
-ADD FOREIGN KEY (id) REFERENCES users(id)
+ADD FOREIGN KEY (user_id) REFERENCES users(id)
 ON UPDATE CASCADE ON DELETE CASCADE;
 
 INSERT INTO users VALUES(
@@ -90,8 +102,28 @@ INSERT INTO users VALUES(
     '$2a$10$Xk3.7QpTPEx5.NusW9zWNe/ClzuZlL6OdwH1Er8DWVpdA0ubGDBcu',
     'STUDENT',
     'ACTIVE'
-),(
+),
+(
     2,
+    'alexandra@gmail.com',
+    'alexandra@gmail.com',
+    'alexandra@gmail.com',
+    'alexandra@gmail.com',
+    '$2a$10$Xk3.7QpTPEx5.NusW9zWNe/ClzuZlL6OdwH1Er8DWVpdA0ubGDBcu',
+    'STUDENT',
+    'ACTIVE'
+),
+(
+    3,
+    'lamborghini@gmail.com',
+    'lamborghini@gmail.com',
+    'lamborghini@gmail.com',
+    'lamborghini@gmail.com',
+    '$2a$10$Xk3.7QpTPEx5.NusW9zWNe/ClzuZlL6OdwH1Er8DWVpdA0ubGDBcu',
+    'STUDENT',
+    'ACTIVE'
+),(
+    4,
     'sandora@gmail.com',
     'sandora@gmail.com',
     'sandora@gmail.com',
@@ -100,7 +132,7 @@ INSERT INTO users VALUES(
     'LECTURER',
     'ACTIVE'
 ),(
-    3,
+    5,
     'somonto@gmail.com',
     'somonto@gmail.com',
     'somonto@gmail.com',
@@ -117,4 +149,10 @@ INSERT INTO student_groups VALUES
 
 INSERT INTO students VALUES
 (1, 1),
-(2, 1);
+(2, 2),
+(3, 3);
+
+INSERT INTO user_coordinates VALUES
+(1, 49.999761199999995, 36.2435298),
+(2, 49.999761199999995, 36.2435298),
+(3, 49.999761199999995, 36.2435298);
