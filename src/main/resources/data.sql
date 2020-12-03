@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS university_employees;
 DROP TABLE IF EXISTS user_coordinates;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS lessons;
-DROP TABLE IF EXISTS university;
 DROP TABLE IF EXISTS department;
+DROP TABLE IF EXISTS university;
 
 -- <Юзеры, кто логинятся на сайт. Для авторизации, аутентификации.>
 CREATE TABLE users (
@@ -89,6 +89,10 @@ CREATE TABLE department (
     name VARCHAR(255),
     description VARCHAR(255)
 ) ENGINE=InnoDB;
+
+ALTER TABLE department
+ADD FOREIGN KEY (university_id) REFERENCES university(id)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ALTER TABLE student_groups
 ADD FOREIGN KEY (department_id) REFERENCES department(id)
