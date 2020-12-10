@@ -21,7 +21,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-data-jdbc',
-            'mysql:mysql-connector-java:8.0.22',
+            'org.mariadb.jdbc:mariadb-java-client:2.6.2',
             'io.jsonwebtoken:jjwt:0.9.1',
             'org.bouncycastle:bcprov-jdk15on:1.67',
             'javax.xml.bind:jaxb-api:2.3.1'
