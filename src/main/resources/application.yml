@@ -1,9 +1,8 @@
 spring:
   datasource:
-    username: 'root'
-    password: 'root'
-    url: 'jdbc:mariadb://localhost:3306/students'
-#    url: 'jdbc:mysql://2.tcp.ngrok.io:10083/students'
+    username: 'w3jhnr9cbobe8tjr'
+    password: 'kiofx5e9f24l4bq8'
+    url: 'jdbc:mysql://w3jhnr9cbobe8tjr:kiofx5e9f24l4bq8@hwr4wkxs079mtb19.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/tat1yv0et9uein5z'
 jwt:
   expiration: 604800
   header: 'Authorization'
