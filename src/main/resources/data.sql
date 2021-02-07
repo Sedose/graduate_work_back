@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS student_attendances;
 DROP TABLE IF EXISTS lessons_students;
 DROP TABLE IF EXISTS lessons_student_groups;
 DROP TABLE IF EXISTS student_groups;
@@ -8,26 +9,23 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS lessons;
 DROP TABLE IF EXISTS department;
 DROP TABLE IF EXISTS university;
+DROP TABLE IF EXISTS course;
 
--- <Юзеры, кто логинятся на сайт. Для авторизации, аутентификации.>
 CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     first_name VARCHAR(255) NOT NULL,
     middle_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
     role VARCHAR(255) NOT NULL,
     status VARCHAR(255) NOT NULL
 ) ENGINE=InnoDB;
 
--- <Чисто для Эдгара>
 CREATE TABLE user_coordinates (
     user_id INT UNSIGNED NOT NULL PRIMARY KEY,
     latitude DOUBLE NOT NULL,
     longitude DOUBLE NOT NULL
 );
--- </Чисто для Эдгара>
 
 CREATE TABLE students (
     id INT UNSIGNED PRIMARY KEY,
@@ -90,6 +88,26 @@ CREATE TABLE department (
     description VARCHAR(255)
 ) ENGINE=InnoDB;
 
+CREATE TABLE `course` (
+  `id` int(11) UNSIGNED PRIMARY KEY,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `start_date` timestamp NOT NULL,
+  `end_date` int(11) NOT NULL,
+  `lecturer_id` int(11) UNSIGNED NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE `student_attendances` (
+  `id` int(10) UNSIGNED PRIMARY KEY,
+  `student_id` int(10) UNSIGNED NOT NULL,
+  `course_id` int(10) UNSIGNED NOT NULL,
+  `timestamp` timestamp NOT NULL
+) ENGINE=InnoDB;
+
+ALTER TABLE department
+ADD FOREIGN KEY (university_id) REFERENCES university(id)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 ALTER TABLE department
 ADD FOREIGN KEY (university_id) REFERENCES university(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
@@ -114,7 +132,6 @@ ALTER TABLE university_employees
 ADD FOREIGN KEY (id) REFERENCES users(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
-
 ALTER TABLE lessons_student_groups
 ADD FOREIGN KEY (lesson_id) REFERENCES lessons(id)
 ON UPDATE CASCADE ON DELETE CASCADE;
@@ -135,13 +152,20 @@ ALTER TABLE user_coordinates
 ADD FOREIGN KEY (user_id) REFERENCES users(id)
 ON UPDATE CASCADE ON DELETE CASCADE;
 
+ALTER TABLE student_attendances
+ADD FOREIGN KEY (student_id) REFERENCES students(id)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+ALTER TABLE student_attendances
+ADD FOREIGN KEY (course_id) REFERENCES course(id)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 INSERT INTO users VALUES(
     1,
-    'sabini@gmail.com',
-    'sabini@gmail.com',
-    'sabini@gmail.com',
-    'avuzia@gmail.com',
-    '$2a$10$Xk3.7QpTPEx5.NusW9zWNe/ClzuZlL6OdwH1Er8DWVpdA0ubGDBcu',
+    'Edharezenva.Avuzi@cs.khpi.edu.ua',
+    'Edharezenva.Avuzi@cs.khpi.edu.ua',
+    'Edharezenva.Avuzi@cs.khpi.edu.ua',
+    'Edharezenva.Avuzi@cs.khpi.edu.ua',
     'STUDENT',
     'ACTIVE'
 ),
@@ -151,7 +175,6 @@ INSERT INTO users VALUES(
     'alexandra@gmail.com',
     'alexandra@gmail.com',
     'alexandra@gmail.com',
-    '$2a$10$Xk3.7QpTPEx5.NusW9zWNe/ClzuZlL6OdwH1Er8DWVpdA0ubGDBcu',
     'STUDENT',
     'ACTIVE'
 ),
@@ -161,7 +184,6 @@ INSERT INTO users VALUES(
     'lamborghini@gmail.com',
     'lamborghini@gmail.com',
     'lamborghini@gmail.com',
-    '$2a$10$Xk3.7QpTPEx5.NusW9zWNe/ClzuZlL6OdwH1Er8DWVpdA0ubGDBcu',
     'STUDENT',
     'ACTIVE'
 ),(
@@ -170,7 +192,6 @@ INSERT INTO users VALUES(
     'sandora@gmail.com',
     'sandora@gmail.com',
     'sandora@gmail.com',
-    '$2a$10$Xk3.7QpTPEx5.NusW9zWNe/ClzuZlL6OdwH1Er8DWVpdA0ubGDBcu',
     'LECTURER',
     'ACTIVE'
 ),(
@@ -179,7 +200,6 @@ INSERT INTO users VALUES(
     'somonto@gmail.com',
     'somonto@gmail.com',
     'somonto@gmail.com',
-    '$2a$10$Xk3.7QpTPEx5.NusW9zWNe/ClzuZlL6OdwH1Er8DWVpdA0ubGDBcu',
     'TRAINING_REPRESENTATIVE',
     'ACTIVE'
 );

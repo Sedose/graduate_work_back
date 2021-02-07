@@ -1,9 +1,17 @@
 spring:
   datasource:
-    username: '${username}'
-    password: '${password}'
-    url: '${db_url}'
+    username: 'root'
+    #    username: ${username}
+    password: 'root'
+    #    password: ${password}
+    url: 'jdbc:mysql://localhost:3306/students'
+#    url: ${db_url}
 jwt:
   expiration: 604800
   header: 'Authorization'
   secret: 'super_secret_key_yes'
+
+#microsoft-graph:
+#  app:
+#    id: 7b04f22c-3217-4611-addd-79562e5c6488
+#    scopes: user.read,mailboxsettings.read,calendars.readwrite

@@ -1,7 +1,9 @@
 package com.example.work.security;
 
 import com.example.work.exception.JwtAuthException;
+import com.microsoft.graph.core.ClientException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -25,15 +27,15 @@ public class JwtTokenFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         var token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
         try {
-            if (token != null && jwtTokenProvider.validateToken(token)) {
+            if (token != null) {
                 var authentication = jwtTokenProvider.getAuthentication(token);
                 if (authentication != null) {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
-        } catch (JwtAuthException e) {
+        } catch (JwtAuthException | ClientException e) {
             SecurityContextHolder.clearContext();
-            ((HttpServletResponse) response).sendError(e.getHttpStatus().value());
+            ((HttpServletResponse) response).sendError(HttpStatus.FORBIDDEN.value());
             throw new JwtAuthException("JWT token is expired or invalid");
         }
         chain.doFilter(request, response);

@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 @Getter
 @RequiredArgsConstructor
 public enum UserRole {
-    TRAINING_REPRESENTATIVE(Set.of(Permission.DEVELOPERS_READ))
-    , LECTURER(Set.of(Permission.DEVELOPERS_READ, Permission.DEVELOPERS_WRITE))
-    , STUDENT(Set.of(Permission.DEVELOPERS_READ));
+    TRAINING_REPRESENTATIVE(Set.of(Permission.DEVELOPERS_READ)),
+    LECTURER(Set.of(Permission.DEVELOPERS_READ, Permission.DEVELOPERS_WRITE)),
+    STUDENT(Set.of(Permission.DEVELOPERS_READ));
 
     private final Set<Permission> permissions;
 

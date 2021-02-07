@@ -1,26 +1,24 @@
 package com.example.work.security;
 
 import com.example.work.entity.UserEntity;
-import com.example.work.exception.JwtAuthException;
+import com.example.work.ms_graph.SimpleAuthProvider;
+import com.microsoft.graph.models.extensions.User;
+import com.microsoft.graph.requests.extensions.GraphServiceClient;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
-import java.util.Base64;
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
+import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
@@ -53,17 +51,9 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claimsJws.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException exception) {
-            throw new JwtAuthException("JWT token is expired or invalid", HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    public Authentication getAuthentication(String token) {
-        var userDetails = userDetailsService.loadUserByUsername(getUsername(token));
+    public Authentication getAuthentication(String accessToken) {
+        var user = retrieveUser(accessToken);
+        var userDetails = userDetailsService.loadUserByUsername(user.mail);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -77,5 +67,15 @@ public class JwtTokenProvider {
 
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader(authHeader);
+    }
+
+    private User retrieveUser(String accessToken) {
+        return GraphServiceClient.builder()
+                .authenticationProvider(new SimpleAuthProvider(accessToken))
+                .buildClient()
+                .me()
+                .buildRequest()
+                .select("displayName,mailboxSettings")
+                .get();
     }
 }
