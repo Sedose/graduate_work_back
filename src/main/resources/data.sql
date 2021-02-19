@@ -104,6 +104,9 @@ CREATE TABLE `student_attendances` (
   `timestamp` timestamp NOT NULL
 ) ENGINE=InnoDB;
 
+
+
+
 ALTER TABLE department
 ADD FOREIGN KEY (university_id) REFERENCES university(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;

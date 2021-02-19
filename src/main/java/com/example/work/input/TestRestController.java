@@ -1,4 +1,4 @@
-package com.example.work.rest;
+package com.example.work.input;
 
 import com.example.work.exception.SomeEntityNotFoundException;
 import com.example.work.model.Developer;

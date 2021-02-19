@@ -2,6 +2,7 @@ package com.example.work.security;
 
 import com.example.work.entity.Status;
 import com.example.work.entity.UserEntity;
+import com.example.work.entity.UserRole;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -13,6 +14,7 @@ public class SecurityUser extends User {
 
     private Long id;
     private boolean isActive;
+    private UserRole userRole;
 
     @Override
     public boolean isAccountNonExpired() {
@@ -34,8 +36,9 @@ public class SecurityUser extends User {
         return isActive;
     }
 
-    public SecurityUser(String username, String password, Collection<? extends GrantedAuthority> authorities, Long id, boolean isActive) {
-        super(username, password, authorities);
+    public SecurityUser(String username, UserRole userRole, Collection<? extends GrantedAuthority> authorities, Long id, boolean isActive) {
+        super(username, "", authorities);
+        this.userRole = userRole;
         this.id = id;
         this.isActive = isActive;
     }
@@ -43,7 +46,7 @@ public class SecurityUser extends User {
     public static SecurityUser fromUser(UserEntity userEntity) {
         return new SecurityUser(
                 userEntity.getEmail(),
-                userEntity.getPassword(),
+                userEntity.getRole(),
                 userEntity.getRole().getAuthorities(),
                 userEntity.getId(),
                 userEntity.getStatus().equals(Status.ACTIVE)

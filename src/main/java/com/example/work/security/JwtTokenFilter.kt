@@ -1,43 +1,37 @@
-package com.example.work.security;
+package com.example.work.security
 
-import com.example.work.exception.JwtAuthException;
-import com.microsoft.graph.core.ClientException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
-
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.example.work.exception.JwtAuthException
+import lombok.RequiredArgsConstructor
+import org.springframework.http.HttpStatus
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
+import org.springframework.web.filter.GenericFilterBean
+import javax.servlet.FilterChain
+import javax.servlet.ServletRequest
+import javax.servlet.ServletResponse
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenFilter extends GenericFilterBean {
+class JwtTokenFilter(private val jwtTokenProvider: JwtTokenProvider) : GenericFilterBean() {
 
-    private final JwtTokenProvider jwtTokenProvider;
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        var token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-        try {
-            if (token != null) {
-                var authentication = jwtTokenProvider.getAuthentication(token);
-                if (authentication != null) {
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+    override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
+        jwtTokenProvider.resolveToken(request as HttpServletRequest)?.let { token ->
+            runCatching {
+                jwtTokenProvider.getAuthentication(token)?.let {
+                    SecurityContextHolder.getContext().authentication = it
                 }
+            }.onFailure {
+                SecurityContextHolder.clearContext()
+                sendError(response)
             }
-        } catch (JwtAuthException | ClientException e) {
-            SecurityContextHolder.clearContext();
-            ((HttpServletResponse) response).sendError(HttpStatus.FORBIDDEN.value());
-            throw new JwtAuthException("JWT token is expired or invalid");
-        }
-        chain.doFilter(request, response);
+        } ?: sendError(response)
+        chain.doFilter(request, response)
+    }
+
+    private fun sendError(response: ServletResponse) {
+        (response as HttpServletResponse).sendError(HttpStatus.FORBIDDEN.value())
+        throw JwtAuthException("JWT token is expired or invalid")
     }
 }

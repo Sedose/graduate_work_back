@@ -1,4 +1,4 @@
-package com.example.work.geolocation.controller;
+package com.example.work.input;
 
 import com.example.work.geolocation.requestbody.Coordinates;
 import com.example.work.geolocation.service.GeolocationService;

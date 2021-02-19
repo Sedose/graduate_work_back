@@ -20,7 +20,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-security',
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+            'org.jetbrains.kotlin:kotlin-reflect:1.4.30',
+            'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.boot:spring-boot-starter-web',
             'org.springframework.boot:spring-boot-starter-data-jdbc',
             'org.springframework.boot:spring-boot-starter-actuator',
@@ -34,12 +36,14 @@ dependencies {
             'org.slf4j:slf4j-nop:1.8.0-beta4'
 
     compileOnly 'org.projectlombok:lombok'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor',
             'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test',
             'org.springframework.security:spring-security-test'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
 }
 
 compileKotlin {

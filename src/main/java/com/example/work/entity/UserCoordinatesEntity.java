@@ -13,6 +13,7 @@ public class UserCoordinatesEntity implements Persistable<Long> {
     Long userId;
     Double latitude;
     Double longitude;
+
     @Transient
     boolean isNew;
 
