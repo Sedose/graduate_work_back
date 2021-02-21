@@ -3,18 +3,15 @@ package com.example.work.security;
 import com.example.work.entity.Status;
 import com.example.work.entity.UserEntity;
 import com.example.work.entity.UserRole;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
-@Getter
 public class SecurityUser extends User {
-
+    private UserRole userRole;
     private Long id;
     private boolean isActive;
-    private UserRole userRole;
 
     @Override
     public boolean isAccountNonExpired() {
@@ -51,5 +48,17 @@ public class SecurityUser extends User {
                 userEntity.getId(),
                 userEntity.getStatus().equals(Status.ACTIVE)
         );
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public boolean isActive() {
+        return this.isActive;
+    }
+
+    public UserRole getUserRole() {
+        return this.userRole;
     }
 }

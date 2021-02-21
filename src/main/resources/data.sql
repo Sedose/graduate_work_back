@@ -169,7 +169,7 @@ INSERT INTO users VALUES(
     'Edharezenva.Avuzi@cs.khpi.edu.ua',
     'Edharezenva.Avuzi@cs.khpi.edu.ua',
     'Edharezenva.Avuzi@cs.khpi.edu.ua',
-    'STUDENT',
+    'LECTURER',
     'ACTIVE'
 ),
 (
