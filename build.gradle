@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.2'
+    id 'org.springframework.boot' version '2.4.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'groovy'
@@ -17,6 +17,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -33,12 +34,14 @@ dependencies {
             'org.codehaus.groovy:groovy-all:3.0.7',
             'com.microsoft.azure:msal4j:1.8.0',
             'com.microsoft.graph:microsoft-graph:2.4.1',
-            'org.slf4j:slf4j-nop:1.8.0-beta4'
+            'org.slf4j:slf4j-nop:1.8.0-beta4',
+            'org.mapstruct:mapstruct:1.4.2.Final'
 
     compileOnly 'org.projectlombok:lombok'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor',
-            'org.projectlombok:lombok'
+            'org.projectlombok:lombok',
+            'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test',
             'org.springframework.security:spring-security-test'

@@ -61,4 +61,8 @@ public class SecurityUser extends User {
     public UserRole getUserRole() {
         return this.userRole;
     }
+
+    public String getEmail() {
+        return super.getUsername();
+    }
 }

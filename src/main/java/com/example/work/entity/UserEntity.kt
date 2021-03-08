@@ -8,9 +8,6 @@ class UserEntity (
     @Id
     val id: Long,
     val email: String,
-    val firstName: String,
-    val middleName: String,
-    val lastName: String,
     val role: UserRole,
     val status: Status
 )

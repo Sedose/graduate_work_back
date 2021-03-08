@@ -1,4 +1,4 @@
-package com.example.work.ms_graph;
+package com.example.work.security;
 
 import com.microsoft.graph.authentication.IAuthenticationProvider;
 import com.microsoft.graph.http.IHttpRequest;

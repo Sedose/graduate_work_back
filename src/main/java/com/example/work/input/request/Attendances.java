@@ -5,11 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
-public class Attendance {
-    String fullName;
-    String userAction;
-    String timestamp;
+public class Attendances {
+    List<Attendance> attendances;
 }

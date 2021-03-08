@@ -1,6 +1,5 @@
 package com.example.work.security;
 
-import com.example.work.ms_graph.SimpleAuthProvider;
 import com.microsoft.graph.models.extensions.User;
 import com.microsoft.graph.requests.extensions.GraphServiceClient;
 import lombok.RequiredArgsConstructor;

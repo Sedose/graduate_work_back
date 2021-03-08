@@ -1,15 +1,16 @@
-package com.example.work.input.request;
+package com.example.work.lecturer.model;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
-public class Attendance {
-    String fullName;
-    String userAction;
-    String timestamp;
+public class Course {
+    Integer id;
+    String name;
 }
