@@ -1,7 +1,7 @@
 package com.example.work.input
 
+import com.example.work.input.response.UserDetailsResponse
 import com.example.work.security.SecurityUser
-import com.example.work.user_details.response.UserDetailsResponse
 import lombok.RequiredArgsConstructor
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
