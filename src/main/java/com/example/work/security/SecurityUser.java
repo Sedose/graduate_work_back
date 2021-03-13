@@ -1,8 +1,8 @@
 package com.example.work.security;
 
-import com.example.work.entity.Status;
+import com.example.work.model.Status;
 import com.example.work.entity.UserEntity;
-import com.example.work.entity.UserRole;
+import com.example.work.model.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public class SecurityUser extends User {
     private UserRole userRole;
-    private Long id;
+    private Integer id;
     private boolean isActive;
 
     @Override
@@ -33,7 +33,7 @@ public class SecurityUser extends User {
         return isActive;
     }
 
-    public SecurityUser(String username, UserRole userRole, Collection<? extends GrantedAuthority> authorities, Long id, boolean isActive) {
+    public SecurityUser(String username, UserRole userRole, Collection<? extends GrantedAuthority> authorities, Integer id, boolean isActive) {
         super(username, "", authorities);
         this.userRole = userRole;
         this.id = id;
@@ -50,7 +50,7 @@ public class SecurityUser extends User {
         );
     }
 
-    public Long getId() {
+    public Integer getId() {
         return this.id;
     }
 

@@ -8,9 +8,9 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Value
 @Table("user_coordinates")
-public class UserCoordinatesEntity implements Persistable<Long> {
+public class UserCoordinatesEntity implements Persistable<Integer> {
     @Id
-    Long userId;
+    Integer userId;
     Double latitude;
     Double longitude;
 
@@ -18,7 +18,7 @@ public class UserCoordinatesEntity implements Persistable<Long> {
     boolean isNew;
 
     @Override
-    public Long getId() {
+    public Integer getId() {
         return userId;
     }
 

@@ -1,7 +1,7 @@
 package com.example.work.security;
 
-import com.example.work.exception.SomeEntityNotFoundException;
-import com.example.work.user.UserRepository;
+import com.example.work.exception.GeneralException;
+import com.example.work.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public SecurityUser loadUserByUsername(String email) throws UsernameNotFoundException {
         return SecurityUser.fromUser(
                 userRepository.findByEmail(email)
-                        .orElseThrow(SomeEntityNotFoundException::new)
+                        .orElseThrow(GeneralException::new)
         );
     }
 }

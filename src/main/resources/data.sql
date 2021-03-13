@@ -1,24 +1,28 @@
 SET @course_kotlin_1_description = "This course aims to share with you the power and the beauty of Kotlin. We'll have a basic overview of the language, as well as a discussion of many corner cases, especially concerning Java interoperability.";
 SET @course_algo_1_description = "This specialization is a mix of theory and practice: you will learn algorithmic techniques for solving various computational problems and will implement about 100 algorithmic coding problems in a programming language of your choice.";
 
-DROP TABLE IF EXISTS student_attendances;
 DROP TABLE IF EXISTS lessons_students;
 DROP TABLE IF EXISTS lessons_student_groups;
 DROP TABLE IF EXISTS student_groups;
-DROP TABLE IF EXISTS students;
-DROP TABLE IF EXISTS courses;
-DROP TABLE IF EXISTS university_employees;
 DROP TABLE IF EXISTS user_coordinates;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS user_attendances;
 DROP TABLE IF EXISTS lessons;
 DROP TABLE IF EXISTS department;
 DROP TABLE IF EXISTS university;
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS university_employees;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     role VARCHAR(255) NOT NULL,
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255),
+    middle_name VARCHAR(255),
+    last_name VARCHAR(255),
+    UNIQUE KEY `full_name` (`first_name`, `middle_name`, `last_name`)
 ) ENGINE=InnoDB;
 
 CREATE TABLE user_coordinates (
@@ -97,11 +101,11 @@ CREATE TABLE `courses` (
   `lecturer_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE `student_attendances` (
-  `id` int(10) UNSIGNED PRIMARY KEY,
-  `student_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE `user_attendances` (
+  `id` int(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  `user_id` int(10) UNSIGNED NOT NULL,
   `course_id` int(10) UNSIGNED NOT NULL,
-  `timestamp` timestamp NOT NULL
+  `registered_timestamp` timestamp NOT NULL
 ) ENGINE=InnoDB;
 
 
@@ -149,11 +153,11 @@ ALTER TABLE user_coordinates
 ADD FOREIGN KEY (user_id) REFERENCES users(id)
 ON UPDATE CASCADE ON DELETE CASCADE;
 
-ALTER TABLE student_attendances
-ADD FOREIGN KEY (student_id) REFERENCES students(id)
+ALTER TABLE user_attendances
+ADD FOREIGN KEY (user_id) REFERENCES users(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
-ALTER TABLE student_attendances
+ALTER TABLE user_attendances
 ADD FOREIGN KEY (course_id) REFERENCES courses(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
@@ -165,29 +169,134 @@ INSERT INTO users VALUES(
     1,
     'Edharezenva.Avuzi@cs.khpi.edu.ua',
     'LECTURER',
-    'ACTIVE'
+    'ACTIVE',
+    NULL,
+    NULL,
+    NULL
 ),
 (
     2,
     'alexandra@gmail.com',
     'STUDENT',
-    'ACTIVE'
+    'ACTIVE',
+    NULL,
+    NULL,
+    NULL
 ),
 (
     3,
     'lamborghini@gmail.com',
     'STUDENT',
-    'ACTIVE'
+    'ACTIVE',
+    NULL,
+    NULL,
+    NULL
 ),(
     4,
     'always_lecturer@gmail.com',
     'LECTURER',
-    'ACTIVE'
+    'ACTIVE',
+    NULL,
+    NULL,
+    NULL
 ),(
     5,
     'somonto@gmail.com',
     'TRAINING_REPRESENTATIVE',
-    'ACTIVE'
+    'ACTIVE',
+    NULL,
+    NULL,
+    NULL
+),
+
+(
+    DEFAULT,
+    'mail1',
+    'LECTURER',
+    'ACTIVE',
+    'Дмитро',
+    'Едуардович',
+    'Двухглавов'
+),(
+    DEFAULT,
+    'mail2',
+    'LECTURER',
+    'ACTIVE',
+    'Світлана',
+    'Романівна',
+    'Жернова'
+),(
+    DEFAULT,
+    'mail3',
+    'LECTURER',
+    'ACTIVE',
+    'Олександра',
+    'Миколаївна',
+    'Мальцева'
+),(
+    DEFAULT,
+    'mail4',
+    'LECTURER',
+    'ACTIVE',
+    'Катерина',
+    'Вячеславівна',
+    'Яковлева'
+),(
+    DEFAULT,
+    'mail5',
+    'LECTURER',
+    'ACTIVE',
+    'Анастасія',
+    'Олександрівна',
+    'Лужна'
+),(
+    DEFAULT,
+    'mail6',
+    'LECTURER',
+    'ACTIVE',
+    'Дмитро',
+    'Андрійович',
+    'Андоньєв'
+),(
+    DEFAULT,
+    'mail7',
+    'LECTURER',
+    'ACTIVE',
+    'Яна',
+    'Вячеславівна',
+    'Кабак'
+),(
+    DEFAULT,
+    'mail8',
+    'LECTURER',
+    'ACTIVE',
+    'Нікіта',
+    'Сергійович',
+    'Багацький'
+),(
+    DEFAULT,
+    'mail9',
+    'LECTURER',
+    'ACTIVE',
+    'Давид',
+    'Федорович',
+    'Дахіна'
+),(
+    DEFAULT,
+    'mail10',
+    'LECTURER',
+    'ACTIVE',
+    'Андрій',
+    'Валерійович',
+    'Шаталов'
+),(
+    DEFAULT,
+    'mail11',
+    'LECTURER',
+    'ACTIVE',
+    'Кирило',
+    'Дмитрович',
+    'Рудковський'
 );
 
 INSERT INTO university_employees VALUES
