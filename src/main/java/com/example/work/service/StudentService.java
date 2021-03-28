@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.work.exception.general.ErrorCodes.CANNOT_GET_USER_BY_FULL_NAME;
+import static com.example.work.exception.general.ErrorCode.CANNOT_GET_USER_BY_FULL_NAME;
 
 @Log4j2
 @Service
@@ -34,7 +34,7 @@ public class StudentService {
         studentAttendancesRepository.saveAll(attendanceEntities);
     }
 
-    private AttendanceEntity toAttendanceEntity(Attendance it, AttendancesRequestBody attendancesRequestBody) {
+    private AttendanceEntity toAttendanceEntity(Attendance it, AttendancesRequestBody attendancesRequestBody) throws GeneralException {
         return new AttendanceEntity(
                 null,
                 retrieveIdFromFullName(it.getFullName()),
@@ -43,13 +43,13 @@ public class StudentService {
         );
     }
 
-    private Integer retrieveIdFromFullName(String fullName) {
+    private Integer retrieveIdFromFullName(String fullName) throws GeneralException {
         String[] splitFullName = fullName.split(" ");
         var optionalUserEntity = userRepository.findByFirstNameAndMiddleNameAndLastName(
                 splitFullName[0], splitFullName[1], splitFullName[2]
         );
         return optionalUserEntity.orElseThrow(
-                () -> new GeneralException(CANNOT_GET_USER_BY_FULL_NAME)
+                () -> new GeneralException("Cannot get user by full name", CANNOT_GET_USER_BY_FULL_NAME)
         ).getId();
     }
 }

@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCodes {
+public enum ErrorCode {
     CANNOT_GET_USER_BY_FULL_NAME("cannot.get.user.by.full.name");
-    String code;
 
+    String code;
 }
