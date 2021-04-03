@@ -194,7 +194,7 @@ INSERT INTO users VALUES(
 ),(
     4,
     'always_lecturer@gmail.com',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     NULL,
     NULL,
@@ -220,7 +220,7 @@ INSERT INTO users VALUES(
 ),(
     DEFAULT,
     'mail2',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     'Світлана',
     'Романівна',
@@ -228,7 +228,7 @@ INSERT INTO users VALUES(
 ),(
     DEFAULT,
     'mail3',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     'Олександра',
     'Миколаївна',
@@ -236,7 +236,7 @@ INSERT INTO users VALUES(
 ),(
     DEFAULT,
     'mail4',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     'Катерина',
     'Вячеславівна',
@@ -244,7 +244,7 @@ INSERT INTO users VALUES(
 ),(
     DEFAULT,
     'mail5',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     'Анастасія',
     'Олександрівна',
@@ -252,7 +252,7 @@ INSERT INTO users VALUES(
 ),(
     DEFAULT,
     'mail6',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     'Дмитро',
     'Андрійович',
@@ -260,7 +260,7 @@ INSERT INTO users VALUES(
 ),(
     DEFAULT,
     'mail7',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     'Яна',
     'Вячеславівна',
@@ -276,7 +276,7 @@ INSERT INTO users VALUES(
 ),(
     DEFAULT,
     'mail9',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     'Давид',
     'Федорович',
@@ -284,7 +284,7 @@ INSERT INTO users VALUES(
 ),(
     DEFAULT,
     'mail10',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     'Андрій',
     'Валерійович',
@@ -292,7 +292,7 @@ INSERT INTO users VALUES(
 ),(
     DEFAULT,
     'mail11',
-    'LECTURER',
+    'STUDENT',
     'ACTIVE',
     'Кирило',
     'Дмитрович',

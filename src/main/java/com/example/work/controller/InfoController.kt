@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 @RestController
 @RequestMapping("/info")
-class FuckingInfoController(
+class InfoController(
     val handlerMapping: RequestMappingHandlerMapping
 ) {
 
