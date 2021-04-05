@@ -1,6 +1,7 @@
 package com.example.work.security
 
-import com.example.work.exception.JwtAuthException
+import com.example.work.exception.GeneralException
+import com.example.work.exception.ErrorCode
 import lombok.RequiredArgsConstructor
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContextHolder
@@ -11,7 +12,6 @@ import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-
 
 @Component
 @RequiredArgsConstructor
@@ -33,6 +33,6 @@ class JwtTokenFilter(private val jwtTokenProvider: JwtTokenProvider) : GenericFi
 
     private fun sendError(response: ServletResponse) {
         (response as HttpServletResponse).sendError(HttpStatus.FORBIDDEN.value())
-        throw JwtAuthException("JWT token is expired or invalid")
+        throw GeneralException("JWT token is expired or invalid", ErrorCode.ACCESS_TOKEN_INVALID)
     }
 }

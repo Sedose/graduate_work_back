@@ -1,6 +1,5 @@
 package com.example.work.exception;
 
-import com.example.work.exception.general.ErrorCode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
