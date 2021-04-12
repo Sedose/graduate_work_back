@@ -35,16 +35,16 @@ public class StudentService {
         studentAttendancesRepository.saveAll(attendanceEntities);
     }
 
-    private AttendanceEntity toAttendanceEntity(Attendance it, AttendancesRequestBody attendancesRequestBody) throws GeneralException {
+    private AttendanceEntity toAttendanceEntity(Attendance attendance, AttendancesRequestBody attendancesRequestBody) throws GeneralException {
         return new AttendanceEntity(
                 null,
-                retrieveIdFromFullName(it.getFullName()),
+                retrieveUserIdFromFullName(attendance.getFullName()),
                 attendancesRequestBody.getCourseId(),
                 attendancesRequestBody.getRegisteredTimestamp()
         );
     }
 
-    private Integer retrieveIdFromFullName(String fullName) throws GeneralException {
+    private Integer retrieveUserIdFromFullName(String fullName) throws GeneralException {
         String[] splitFullName = fullName.split(" ");
         var user = new User(splitFullName[0], splitFullName[1], splitFullName[2]);
         return userRepository.findByFirstNameAndMiddleNameAndLastName(
