@@ -14,8 +14,9 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-@RequiredArgsConstructor
-class JwtTokenFilter(private val jwtTokenProvider: JwtTokenProvider) : GenericFilterBean() {
+class JwtTokenFilter(
+    private val jwtTokenProvider: JwtTokenProvider,
+) : GenericFilterBean() {
 
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         jwtTokenProvider.resolveToken(request as HttpServletRequest)?.let { token ->

@@ -42,7 +42,7 @@ class Config {
     public Map<ErrorCode, ResponseEntity<String>> errorCodeToResponseMap() {
         return new HashMap<>() {{
            put(ACCESS_TOKEN_INVALID, ResponseEntity.status(HttpStatus.FORBIDDEN).build());
-           put(CANNOT_GET_USER_BY_FULL_NAME, ResponseEntity.notFound().build());
+           put(CANNOT_GET_USER_BY_FULL_NAME, ResponseEntity.status(HttpStatus.NOT_FOUND).build());
         }};
     }
 }
