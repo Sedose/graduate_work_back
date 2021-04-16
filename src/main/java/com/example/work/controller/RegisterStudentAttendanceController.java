@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class RegisterStudentAttendanceController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> registerAttendanceUsingFile(
-            @RequestBody AttendancesRequestBody attendancesRequestBody
+            @Valid @RequestBody AttendancesRequestBody attendancesRequestBody
     ) {
         log.info(attendancesRequestBody.toString());
         studentService.registerAttendanceUsingFile(attendancesRequestBody);
