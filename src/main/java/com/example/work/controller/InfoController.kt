@@ -19,7 +19,7 @@ class InfoController(
     }
 
     @GetMapping("/all-endpoints")
-    fun showAllEndpoints(model: Model): Map<*, HandlerMethod> {
+    fun showAllEndpoints(): Map<*, HandlerMethod> {
         return handlerMapping.handlerMethods
     }
 }

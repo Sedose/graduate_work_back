@@ -1,8 +1,7 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.4'
+    id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'groovy'
     id 'org.jetbrains.kotlin.jvm' version '1.4.31'
     id 'application'
 }
@@ -33,7 +32,6 @@ dependencies {
             'io.jsonwebtoken:jjwt:0.9.1',
             'org.bouncycastle:bcprov-jdk15on:1.67',
             'javax.xml.bind:jaxb-api:2.3.1',
-            'org.codehaus.groovy:groovy-all:3.0.7',
             'com.microsoft.azure:msal4j:1.8.0',
             'com.microsoft.graph:microsoft-graph:2.4.1',
             'org.slf4j:slf4j-nop:1.8.0-beta4',
@@ -45,8 +43,13 @@ dependencies {
             'org.projectlombok:lombok',
             'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test',
-            'org.springframework.security:spring-security-test'
+    testImplementation(
+            'org.springframework.boot:spring-boot-starter-test'
+    )
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
@@ -59,4 +62,8 @@ compileKotlin {
 
 application {
     mainClassName = 'com.example.work.Application'
+}
+
+test {
+    useJUnitPlatform()
 }

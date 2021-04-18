@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.work.exception.ErrorCode.CANNOT_GET_USER_BY_FULL_NAME;
+import static com.example.work.exception.ErrorCode.*;
 
 @Log4j2
 @Service
@@ -45,13 +45,20 @@ public class StudentService {
     }
 
     private Integer retrieveUserIdFromFullName(String fullName) throws GeneralException {
-        String[] splitFullName = fullName.split(" ");
-        var user = new User(splitFullName[0], splitFullName[1], splitFullName[2]);
+        var user = retrieveUser(fullName);
         return userRepository.findByFirstNameAndMiddleNameAndLastName(
                 user.firstName, user.middleName, user.lastName
         ).orElseThrow(() ->
-                new GeneralException("Cannot find " + user.toString(), CANNOT_GET_USER_BY_FULL_NAME)
+                new GeneralException(CANNOT_GET_USER_BY_FULL_NAME)
         ).getId();
+    }
+
+    private User retrieveUser(String fullName) {
+        String[] splitFullName = fullName.split(" ");
+        if(splitFullName.length != 3) {
+            throw new GeneralException(CANNOT_EXTRACT_PARTS_FROM_USER_FULL_NAME);
+        }
+        return new User(splitFullName[0], splitFullName[1], splitFullName[2]);
     }
 }
 

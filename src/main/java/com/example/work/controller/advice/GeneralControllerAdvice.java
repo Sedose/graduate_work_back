@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.work.exception.ErrorCode.ACCESS_TOKEN_INVALID;
-import static com.example.work.exception.ErrorCode.CANNOT_GET_USER_BY_FULL_NAME;
+import static com.example.work.exception.ErrorCode.*;
 
 @ControllerAdvice
 @RequiredArgsConstructor
@@ -43,6 +42,7 @@ class Config {
         return new HashMap<>() {{
            put(ACCESS_TOKEN_INVALID, ResponseEntity.status(HttpStatus.FORBIDDEN).build());
            put(CANNOT_GET_USER_BY_FULL_NAME, ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+           put(CANNOT_EXTRACT_PARTS_FROM_USER_FULL_NAME, ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
         }};
     }
 }

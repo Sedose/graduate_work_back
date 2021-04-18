@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 public class GeneralException extends RuntimeException {
     ErrorCode code;
 
+    public GeneralException(ErrorCode code) {
+        this.code = code;
+    }
+
     public GeneralException(String message, ErrorCode code) {
         super(message);
         this.code = code;
