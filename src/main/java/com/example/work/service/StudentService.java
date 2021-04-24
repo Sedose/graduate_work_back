@@ -9,16 +9,16 @@ import com.example.work.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.work.exception.ErrorCode.*;
+import static com.example.work.exception.ErrorCode.CANNOT_EXTRACT_PARTS_FROM_USER_FULL_NAME;
+import static com.example.work.exception.ErrorCode.CANNOT_GET_USER_BY_FULL_NAME;
 
-@Log4j2
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -28,11 +28,14 @@ public class StudentService {
     UserRepository userRepository;
 
     public void registerAttendanceUsingFile(AttendancesRequestBody attendancesRequestBody) {
-        List<AttendanceEntity> attendanceEntities = attendancesRequestBody.getAttendances()
+        studentAttendancesRepository.saveAll(toAttendanceEntities(attendancesRequestBody));
+    }
+
+    private List<AttendanceEntity> toAttendanceEntities(AttendancesRequestBody attendancesRequestBody) {
+        return attendancesRequestBody.getAttendances()
                 .stream()
                 .map(it -> toAttendanceEntity(it, attendancesRequestBody))
                 .collect(Collectors.toList());
-        studentAttendancesRepository.saveAll(attendanceEntities);
     }
 
     private AttendanceEntity toAttendanceEntity(Attendance attendance, AttendancesRequestBody attendancesRequestBody) throws GeneralException {
@@ -55,25 +58,17 @@ public class StudentService {
 
     private User retrieveUser(String fullName) {
         String[] splitFullName = fullName.split(" ");
-        if(splitFullName.length != 3) {
+        if (splitFullName.length != 3) {
             throw new GeneralException(CANNOT_EXTRACT_PARTS_FROM_USER_FULL_NAME);
         }
         return new User(splitFullName[0], splitFullName[1], splitFullName[2]);
     }
-}
 
-@AllArgsConstructor
-class User {
-    String firstName;
-    String middleName;
-    String lastName;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+    @ToString
+    @AllArgsConstructor
+    static class User {
+        String firstName;
+        String middleName;
+        String lastName;
     }
 }

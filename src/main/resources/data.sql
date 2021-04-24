@@ -108,6 +108,30 @@ CREATE TABLE `user_attendances` (
   `registered_timestamp` timestamp NOT NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE `settings`(
+    `code` varchar(255) PRIMARY KEY COLLATE utf8mb4_unicode_ci NOT NULL,
+    `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE `settings`(
+    `code` varchar(255) PRIMARY KEY COLLATE utf8mb4_unicode_ci NOT NULL,
+    `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE `settings_users`(
+    `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `user_id` INT UNSIGNED NOT NULL,
+    `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    PRIMARY KEY(`code`, `user_id`)
+) ENGINE=InnoDB;
+
+ALTER TABLE settings_users
+ADD FOREIGN KEY (code) REFERENCES settings(code)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+ALTER TABLE settings_users
+ADD FOREIGN KEY (user_id) REFERENCES users(id)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ALTER TABLE department
 ADD FOREIGN KEY (university_id) REFERENCES university(id)
@@ -327,3 +351,9 @@ INSERT INTO user_coordinates VALUES
 (1, 49.999761199999995, 36.2435298),
 (2, 49.999761199999995, 36.2435298),
 (3, 49.999761199999995, 36.2435298);
+
+
+INSERT INTO `settings` VALUES
+('MIN_FILE_UPLOAD_PERIOD', 'Sets the minimum period in minutes between 2 file uploads for user');
+INSERT INTO `settings_users` VALUES
+('MIN_FILE_UPLOAD_PERIOD', 1, '60');
