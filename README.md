@@ -10,4 +10,4 @@ The initial customer's whim was to have Java on backend.
 Kotlin is used primarily in places for business logic where Java code can potentially be awful.
 
 ## TO-DO list
-1. Refactor project structure
+1. RuntimeExceptions used in bad way. Need to change error handling.

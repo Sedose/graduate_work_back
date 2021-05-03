@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public class StudentService {
     UserRepository userRepository;
 
     public void registerAttendanceUsingFile(AttendancesRequestBody attendancesRequestBody) {
+        attendancesRequestBody.getAttendances()
+                .removeIf(it -> StringUtils.isBlank(it.getFullName()));
         studentAttendancesRepository.saveAll(toAttendanceEntities(attendancesRequestBody));
     }
 

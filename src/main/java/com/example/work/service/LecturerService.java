@@ -1,7 +1,7 @@
 package com.example.work.service;
 
-import com.example.work.mapper.MainMapper;
 import com.example.work.controller.response.body.CoursesModel;
+import com.example.work.mapper.MainMapper;
 import com.example.work.repository.CoursesRepo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
