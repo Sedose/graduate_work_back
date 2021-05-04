@@ -22,23 +22,16 @@ class JwtTokenFilter(
 
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         request as HttpServletRequest
-        val requestPath = request.requestURI.substring(request.contextPath.length)
-        if(
-            !requestPath.startsWith("/info")
-            && !requestPath.startsWith("/error")
-            && !requestPath.startsWith("/favicon.ico")
-        ) {
-            resolveToken(request)?.let { token ->
-                runCatching {
-                    getAuthentication(token).let {
-                        SecurityContextHolder.getContext().authentication = it
-                    }
-                }.onFailure {
-                    SecurityContextHolder.clearContext()
-                    sendError(response)
+        resolveToken(request)?.let { token ->
+            runCatching {
+                getAuthentication(token).let {
+                    SecurityContextHolder.getContext().authentication = it
                 }
-            } ?: sendError(response)
-        }
+            }.onFailure {
+                SecurityContextHolder.clearContext()
+                sendError(response)
+            }
+        } ?: sendError(response)
         chain.doFilter(request, response)
     }
 
