@@ -113,11 +113,6 @@ CREATE TABLE `settings`(
     `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE `settings`(
-    `code` varchar(255) PRIMARY KEY COLLATE utf8mb4_unicode_ci NOT NULL,
-    `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB;
-
 CREATE TABLE `settings_users`(
     `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
     `user_id` INT UNSIGNED NOT NULL,
