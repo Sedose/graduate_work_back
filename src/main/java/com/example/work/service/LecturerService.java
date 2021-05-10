@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LecturerService {
 
-    CoursesRepo coursesRepo;
-    MainMapper mainMapper;
+    private final CoursesRepo coursesRepo;
+    private final MainMapper mainMapper;
 
     public CoursesModel retrieveAllCoursesByLecturerId(Integer id) {
         return new CoursesModel(mainMapper.map(coursesRepo.findAllByLecturerId(id)));

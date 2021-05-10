@@ -25,8 +25,8 @@ import static com.example.work.exception.ErrorCode.CANNOT_GET_USER_BY_FULL_NAME;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StudentService {
 
-    StudentAttendancesRepository studentAttendancesRepository;
-    UserRepository userRepository;
+    private final StudentAttendancesRepository studentAttendancesRepository;
+    private final UserRepository userRepository;
 
     public void registerAttendanceUsingFile(AttendancesRequestBody attendancesRequestBody) {
         attendancesRequestBody.getAttendances()

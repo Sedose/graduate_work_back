@@ -1,8 +1,8 @@
 package com.example.work.service;
 
+import com.example.work.controller.request.body.CoordinatesRequestBody;
 import com.example.work.entity.UserCoordinatesEntity;
 import com.example.work.repository.GeolocationRepository;
-import com.example.work.controller.request.body.CoordinatesRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
