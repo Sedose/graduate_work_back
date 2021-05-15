@@ -4,13 +4,11 @@ import com.example.work.repository.UserRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 
 @RestController
 @RequestMapping("/info")
 class InfoController(
-    val handlerMapping: RequestMappingHandlerMapping,
-    val userRepository: UserRepository,
+    private val userRepository: UserRepository,
 ) {
 
     @GetMapping("/health-check")
