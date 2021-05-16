@@ -12,7 +12,9 @@ DROP TABLE IF EXISTS university;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS courses;
 DROP TABLE IF EXISTS university_employees;
+DROP TABLE IF EXISTS users_settings;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS settings;
 
 CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -109,22 +111,24 @@ CREATE TABLE `user_attendances` (
 ) ENGINE=InnoDB;
 
 CREATE TABLE `settings`(
-    `code` varchar(255) PRIMARY KEY COLLATE utf8mb4_unicode_ci NOT NULL,
-    `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB;
-
-CREATE TABLE `settings_users`(
+    `id` int(10) UNSIGNED PRIMARY KEY,
     `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-    `user_id` INT UNSIGNED NOT NULL,
-    `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-    PRIMARY KEY(`code`, `user_id`)
+    `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `default_value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB;
 
-ALTER TABLE settings_users
-ADD FOREIGN KEY (code) REFERENCES settings(code)
+CREATE TABLE `users_settings`(
+    `id` int(10) UNSIGNED PRIMARY KEY,
+    `user_id` int(10) UNSIGNED NOT NULL,
+    `setting_id` int(10) UNSIGNED NOT NULL,
+    `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB;
+
+ALTER TABLE users_settings
+ADD FOREIGN KEY (setting_id) REFERENCES settings(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
-ALTER TABLE settings_users
+ALTER TABLE users_settings
 ADD FOREIGN KEY (user_id) REFERENCES users(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
@@ -347,8 +351,7 @@ INSERT INTO user_coordinates VALUES
 (2, 49.999761199999995, 36.2435298),
 (3, 49.999761199999995, 36.2435298);
 
-
 INSERT INTO `settings` VALUES
-('MIN_FILE_UPLOAD_PERIOD', 'Sets the minimum period in minutes between 2 file uploads for user');
-INSERT INTO `settings_users` VALUES
-('MIN_FILE_UPLOAD_PERIOD', 1, '60');
+(1, 'MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 'Sets the minimum period in seconds between 2 file uploads for user', '3600');
+INSERT INTO `users_settings` VALUES
+(1, 1, '3600');

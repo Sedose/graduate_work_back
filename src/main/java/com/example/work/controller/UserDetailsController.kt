@@ -1,6 +1,6 @@
 package com.example.work.controller
 
-import com.example.work.controller.response.body.UserDetailsResponse
+import com.example.work.controller.response.body.UserDetails
 import com.example.work.security.SecurityUser
 import lombok.RequiredArgsConstructor
 import org.springframework.http.HttpStatus
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/user-details")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 class UserDetailsController {
 
-    @GetMapping
+    @GetMapping("/user-details")
     @ResponseStatus(HttpStatus.OK)
-    fun retrieveUserDetailsByToken(authentication: Authentication): UserDetailsResponse {
+    fun retrieveUserDetailsByToken(authentication: Authentication): UserDetails {
         val securityUser = (authentication.principal as SecurityUser)
-        return UserDetailsResponse(securityUser.userRole.name)
+        return UserDetails(securityUser.userRole.name)
     }
 }

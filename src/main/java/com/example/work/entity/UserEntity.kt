@@ -7,8 +7,7 @@ import org.springframework.data.relational.core.mapping.Table
 
 @Table("users")
 class UserEntity (
-    @Id
-    val id: Int,
+    @Id val id: Int,
     val email: String,
     val role: UserRole,
     val status: Status,
