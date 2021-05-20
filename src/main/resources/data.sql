@@ -111,21 +111,19 @@ CREATE TABLE `user_attendances` (
 ) ENGINE=InnoDB;
 
 CREATE TABLE `settings`(
-    `id` int(10) UNSIGNED PRIMARY KEY,
-    `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `code` varchar(255) COLLATE utf8mb4_unicode_ci PRIMARY KEY,
     `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
     `default_value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE `users_settings`(
-    `id` int(10) UNSIGNED PRIMARY KEY,
+    `code` varchar(255) COLLATE utf8mb4_unicode_ci PRIMARY KEY,
     `user_id` int(10) UNSIGNED NOT NULL,
-    `setting_id` int(10) UNSIGNED NOT NULL,
     `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB;
 
 ALTER TABLE users_settings
-ADD FOREIGN KEY (setting_id) REFERENCES settings(id)
+ADD FOREIGN KEY (code) REFERENCES settings(code)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ALTER TABLE users_settings
@@ -352,6 +350,6 @@ INSERT INTO user_coordinates VALUES
 (3, 49.999761199999995, 36.2435298);
 
 INSERT INTO `settings` VALUES
-(1, 'MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 'Sets the minimum period in seconds between 2 file uploads for user', '3600');
+('MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 'Sets the minimum period in seconds between 2 file uploads for user', '3600');
 INSERT INTO `users_settings` VALUES
-(1, 1, '3600');
+('MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 1, '3600');
