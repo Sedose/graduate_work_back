@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-internal interface UserSettingsRepository : CrudRepository<UserSettingsEntity, String> {
+interface UserSettingsRepository : CrudRepository<UserSettingsEntity, String> {
 
     @Query(
         """

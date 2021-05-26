@@ -236,7 +236,7 @@ INSERT INTO users VALUES(
 ),
 
 (
-    DEFAULT,
+    6,
     'mail1',
     'LECTURER',
     'ACTIVE',
@@ -244,7 +244,7 @@ INSERT INTO users VALUES(
     'Едуардович',
     'Двухглавов'
 ),(
-    DEFAULT,
+    7,
     'mail2',
     'STUDENT',
     'ACTIVE',
@@ -252,7 +252,7 @@ INSERT INTO users VALUES(
     'Романівна',
     'Жернова'
 ),(
-    DEFAULT,
+    8,
     'mail3',
     'STUDENT',
     'ACTIVE',
@@ -260,7 +260,7 @@ INSERT INTO users VALUES(
     'Миколаївна',
     'Мальцева'
 ),(
-    DEFAULT,
+    9,
     'mail4',
     'STUDENT',
     'ACTIVE',
@@ -268,7 +268,7 @@ INSERT INTO users VALUES(
     'Вячеславівна',
     'Яковлева'
 ),(
-    DEFAULT,
+    10,
     'mail5',
     'STUDENT',
     'ACTIVE',
@@ -276,7 +276,7 @@ INSERT INTO users VALUES(
     'Олександрівна',
     'Лужна'
 ),(
-    DEFAULT,
+    11,
     'mail6',
     'STUDENT',
     'ACTIVE',
@@ -284,7 +284,7 @@ INSERT INTO users VALUES(
     'Андрійович',
     'Андоньєв'
 ),(
-    DEFAULT,
+    12,
     'mail7',
     'STUDENT',
     'ACTIVE',
@@ -292,7 +292,7 @@ INSERT INTO users VALUES(
     'Вячеславівна',
     'Кабак'
 ),(
-    DEFAULT,
+    13,
     'mail8',
     'LECTURER',
     'ACTIVE',
@@ -300,7 +300,7 @@ INSERT INTO users VALUES(
     'Сергійович',
     'Багацький'
 ),(
-    DEFAULT,
+    14,
     'mail9',
     'STUDENT',
     'ACTIVE',
@@ -308,7 +308,7 @@ INSERT INTO users VALUES(
     'Федорович',
     'Дахіна'
 ),(
-    DEFAULT,
+    15,
     'mail10',
     'STUDENT',
     'ACTIVE',
@@ -316,13 +316,37 @@ INSERT INTO users VALUES(
     'Валерійович',
     'Шаталов'
 ),(
-    DEFAULT,
+    16,
     'mail11',
     'STUDENT',
     'ACTIVE',
     'Кирило',
     'Дмитрович',
     'Рудковський'
+),(
+   17,
+   'mail12',
+   'STUDENT',
+   'ACTIVE',
+   'Са',
+   NULL,
+   'До'
+),(
+   18,
+   'mail13',
+   'STUDENT',
+   'ACTIVE',
+   'Чинь',
+   'Ла',
+   NULL
+),(
+   19,
+   'mail14',
+   'STUDENT',
+   'ACTIVE',
+   'Сунь',
+   NULL,
+   NULL
 );
 
 INSERT INTO university_employees VALUES
@@ -345,9 +369,24 @@ INSERT INTO student_groups VALUES
 (3, 'KN-111e', NULL, NULL, 1, 2, 'KN');
 
 INSERT INTO students VALUES
-(1, 1),
 (2, 2),
-(3, 3);
+(3, 3),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 1),
+(8, 1),
+(9, 1),
+(10, 1),
+(11, 1),
+(12, 1),
+(13, 1),
+(14, 1),
+(15, 1),
+(16, 1),
+(17, 1),
+(18, 1),
+(19, 1);
 
 INSERT INTO user_coordinates VALUES
 (1, 49.999761199999995, 36.2435298),

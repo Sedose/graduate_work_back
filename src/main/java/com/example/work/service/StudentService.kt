@@ -1,107 +1,128 @@
-package com.example.work.service;
+package com.example.work.service
 
-import com.example.work.controller.request.body.Attendance;
-import com.example.work.controller.request.body.AttendancesRequestBody;
-import com.example.work.entity.AttendanceEntity;
-import com.example.work.entity.UserSettingCode;
-import com.example.work.exception.GeneralException;
-import com.example.work.repository.StudentAttendancesRepository;
-import com.example.work.repository.UserRepository;
-import com.example.work.repository.UserSettingsRepository;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-import lombok.experimental.FieldDefaults;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.example.work.exception.ErrorCode.*;
+import lombok.RequiredArgsConstructor
+import lombok.experimental.FieldDefaults
+import com.example.work.repository.StudentAttendancesRepository
+import com.example.work.repository.UserSettingsRepository
+import com.example.work.repository.UserRepository
+import com.example.work.controller.request.body.AttendancesRequestBody
+import java.time.Instant
+import com.example.work.entity.UserSettingCode
+import com.example.work.controller.request.body.Attendance
+import com.example.work.entity.AttendanceEntity
+import com.example.work.exception.ErrorCode
+import com.example.work.exception.GeneralException
+import lombok.AccessLevel
+import java.util.stream.Collectors
+import kotlin.Throws
+import lombok.ToString
+import lombok.AllArgsConstructor
+import org.apache.commons.lang3.StringUtils
+import org.springframework.stereotype.Service
+import java.time.Duration
+import java.util.*
+import javax.validation.constraints.NotNull
 
 @Service
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class StudentService {
+open class StudentService (
+    private val studentAttendancesRepository: StudentAttendancesRepository,
+    private val userSettingsRepository: UserSettingsRepository,
+    private val userRepository: UserRepository,
+) {
 
-    private final StudentAttendancesRepository studentAttendancesRepository;
-    private final UserSettingsRepository userSettingsRepository;
-    private final UserRepository userRepository;
-
-    public void registerAttendanceUsingFile(
-            AttendancesRequestBody attendancesRequestBody,
-            Integer lecturerIdRegisteredBy
+    fun registerAttendanceUsingFile(
+        attendancesRequestBody: AttendancesRequestBody,
+        lecturerIdRegisteredBy: Int
     ) {
-        var now = attendancesRequestBody.getRegisteredTimestamp().toInstant();
-        var was = studentAttendancesRepository.findMaxByRegisteredTimestampAndRegisteredBy(lecturerIdRegisteredBy);
-        var userSettingMinFileUploadPeriodValueInSeconds = Duration.ofSeconds(Integer.parseInt(
-                userSettingsRepository.findByCode(
-                        UserSettingCode.MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL.name()
-                ).getValue()
-        ));
-        if(was != null && Duration.between(was, now).compareTo(userSettingMinFileUploadPeriodValueInSeconds) < 0) {
-            throw new GeneralException(TOO_FREQUENT_FILE_UPLOADS);
+        val distinctAttendances = attendancesRequestBody.attendances
+            .filterNot { it.fullName.isNullOrBlank() }
+            .groupBy { it.fullName }
+            .filterNot { it.value.last().userAction == "Ушел" }
+            .map { it.value.first() }
+        val now = attendancesRequestBody.registeredTimestamp.toInstant()
+        val was = studentAttendancesRepository.findMaxByRegisteredTimestampAndRegisteredBy(lecturerIdRegisteredBy)
+        val userSettingMinFileUploadPeriodValueInSeconds = Duration.ofSeconds(
+            userSettingsRepository.findByCode(
+                UserSettingCode.MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL.name
+            ).value.toLong()
+        )
+        if (was != null && Duration.between(was, now) < userSettingMinFileUploadPeriodValueInSeconds) {
+            throw GeneralException(ErrorCode.TOO_FREQUENT_FILE_UPLOADS)
         }
-        attendancesRequestBody.getAttendances()
-                .removeIf(it -> StringUtils.isBlank(it.getFullName()));
-        studentAttendancesRepository.saveAll(toAttendanceEntities(
-                attendancesRequestBody,
+        studentAttendancesRepository.saveAll(
+            toAttendanceEntities(
+                distinctAttendances,
+                attendancesRequestBody.courseId,
+                attendancesRequestBody.registeredTimestamp,
                 lecturerIdRegisteredBy
-        ));
+            )
+        )
     }
 
-    private List<AttendanceEntity> toAttendanceEntities(
-            AttendancesRequestBody attendancesRequestBody,
-            Integer lecturerId
-    ) {
-        return attendancesRequestBody.getAttendances()
-                .stream()
-                .map(it -> toAttendanceEntity(
-                        it,
-                        attendancesRequestBody,
-                        lecturerId
-                )).collect(Collectors.toList());
-    }
-
-    private AttendanceEntity toAttendanceEntity(
-            Attendance attendance,
-            AttendancesRequestBody attendancesRequestBody,
-            Integer lecturerId
-    ) throws GeneralException {
-        return new AttendanceEntity(
-                null,
-                retrieveUserIdFromFullName(attendance.getFullName()),
-                attendancesRequestBody.getCourseId(),
-                lecturerId,
-                attendancesRequestBody.getRegisteredTimestamp()
-        );
-    }
-
-    private Integer retrieveUserIdFromFullName(String fullName) throws GeneralException {
-        var user = retrieveUser(fullName);
-        return userRepository.findByFirstNameAndMiddleNameAndLastName(
-                user.firstName, user.middleName, user.lastName
-        ).orElseThrow(() ->
-                new GeneralException(CANNOT_GET_USER_BY_FULL_NAME)
-        ).getId();
-    }
-
-    private User retrieveUser(String fullName) {
-        String[] splitFullName = fullName.split(" ");
-        if (splitFullName.length != 3) {
-            throw new GeneralException(CANNOT_EXTRACT_PARTS_FROM_USER_FULL_NAME);
+    private fun toAttendanceEntities(
+        attendances: List<Attendance>,
+        courseId: Int,
+        registeredTimestamp: Date,
+        lecturerId: Int,
+    ): List<AttendanceEntity> {
+        return attendances.map {
+            toAttendanceEntity(
+                it,
+                courseId,
+                registeredTimestamp,
+                lecturerId
+            )
         }
-        return new User(splitFullName[0], splitFullName[1], splitFullName[2]);
     }
+
+    @Throws(GeneralException::class)
+    private fun toAttendanceEntity(
+        attendance: Attendance,
+        courseId: Int,
+        registeredTimestamp: Date,
+        lecturerId: Int,
+    ) = AttendanceEntity(
+            null,
+            retrieveUserIdFromFullName(attendance.fullName!!),
+            courseId,
+            lecturerId,
+            registeredTimestamp
+    )
+
+    @Throws(GeneralException::class)
+    private fun retrieveUserIdFromFullName(fullName: String): Int {
+        val user = retrieveUser(fullName)
+        return userRepository.findByFirstNameAndMiddleNameAndLastName(
+            user.firstName, user.middleName, user.lastName
+        ).orElseThrow { GeneralException(ErrorCode.CANNOT_GET_USER_BY_FULL_NAME) }.id
+    }
+
+    private fun retrieveUser(fullName: String): User {
+        val splitFullName = fullName.split(" ").toTypedArray()
+        if (splitFullName.size != 3) {
+            throw GeneralException(ErrorCode.CANNOT_EXTRACT_PARTS_FROM_USER_FULL_NAME)
+        }
+        return User(
+            toStringOrNull(splitFullName[0]),
+            toStringOrNull(splitFullName[1]),
+            toStringOrNull(splitFullName[2])
+        )
+    }
+
+    private fun toStringOrNull(partOfFullName: String) =
+        partOfFullName.takeUnless { it == "_" }
 
     @ToString
     @AllArgsConstructor
-    static class User {
-        String firstName;
-        String middleName;
-        String lastName;
-    }
+    internal class User (
+        val firstName: String?,
+        val middleName: String?,
+        val lastName: String?,
+    )
+
+    internal class DistinctAttendance (
+        val fullName: String,
+        val userActions: List<String>,
+        val timestamp: String,
+    )
 }
