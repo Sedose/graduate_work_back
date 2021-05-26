@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-internal interface UserSettingsRepository : CrudRepository<UserSettingsEntity, Int> {
+internal interface UserSettingsRepository : CrudRepository<UserSettingsEntity, String> {
 
     @Query(
         """
@@ -18,6 +18,16 @@ internal interface UserSettingsRepository : CrudRepository<UserSettingsEntity, I
         """
     )
     fun findUserSettingsByUserId(userId: Int): List<UserSettingsEntity>
+
+    @Query(
+        """
+            SELECT settings.code, settings.description, users_settings.value, settings.default_value 
+            FROM settings INNER JOIN users_settings
+            ON settings.code = users_settings.code
+            WHERE `users_settings`.`code` = :settingCode
+        """
+    )
+    fun findByCode(settingCode: String): UserSettingsEntity
 
     @Modifying
     @Query("""

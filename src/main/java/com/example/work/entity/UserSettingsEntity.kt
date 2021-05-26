@@ -1,11 +1,15 @@
-package com.example.work.entity;
+package com.example.work.entity
 
-import lombok.Value;
+import lombok.Value
 
 @Value
-public class UserSettingsEntity {
-    String code;
-    String description;
-    String value;
-    String defaultValue;
+class UserSettingsEntity (
+    val code: String,
+    val description: String,
+    val value: String,
+    val defaultValue: String,
+)
+
+enum class UserSettingCode {
+    MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL
 }

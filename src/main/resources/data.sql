@@ -107,6 +107,7 @@ CREATE TABLE `user_attendances` (
   `id` int(10) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   `user_id` int(10) UNSIGNED NOT NULL,
   `course_id` int(10) UNSIGNED NOT NULL,
+  `registered_by` int(10) UNSIGNED NOT NULL,
   `registered_timestamp` timestamp NOT NULL
 ) ENGINE=InnoDB;
 
@@ -184,6 +185,10 @@ ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ALTER TABLE courses
 ADD FOREIGN KEY (lecturer_id) REFERENCES university_employees(id)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+ALTER TABLE user_attendances
+ADD FOREIGN KEY (registered_by) REFERENCES university_employees(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 INSERT INTO users VALUES(

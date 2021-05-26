@@ -6,6 +6,9 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Date;
 
+/**
+ * registeredBy - id of lecturer
+ */
 @Value
 @Table("user_attendances")
 public class AttendanceEntity {
@@ -13,5 +16,6 @@ public class AttendanceEntity {
     Integer id;
     Integer userId;
     Integer courseId;
+    Integer registeredBy;
     Date registeredTimestamp;
 }

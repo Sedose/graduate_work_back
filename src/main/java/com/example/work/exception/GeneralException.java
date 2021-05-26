@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class GeneralException extends RuntimeException {
-    ErrorCode code;
+    public ErrorCode code;
 
     public GeneralException(ErrorCode code) {
         this.code = code;
