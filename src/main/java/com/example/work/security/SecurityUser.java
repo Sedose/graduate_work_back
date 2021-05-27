@@ -33,7 +33,13 @@ public class SecurityUser extends User {
         return isActive;
     }
 
-    public SecurityUser(String username, UserRole userRole, Collection<? extends GrantedAuthority> authorities, Integer id, boolean isActive) {
+    public SecurityUser(
+            String username,
+            UserRole userRole,
+            Collection<? extends GrantedAuthority> authorities,
+            Integer id,
+            boolean isActive
+    ) {
         super(username, "", authorities);
         this.userRole = userRole;
         this.id = id;

@@ -5,18 +5,21 @@ import com.example.work.controller.response.body.UserSettingsResponseBody;
 import com.example.work.mapper.CommonMapper;
 import com.example.work.repository.UserSettingsRepository;
 import com.example.work.security.SecurityUser;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class UserService {
 
-    CommonMapper commonMapper;
-    UserSettingsRepository userSettingsRepository;
+    private CommonMapper commonMapper;
+    private UserSettingsRepository userSettingsRepository;
+
+    public UserService() {
+    }
+
+    public UserService(CommonMapper commonMapper, UserSettingsRepository userSettingsRepository) {
+        this.commonMapper = commonMapper;
+        this.userSettingsRepository = userSettingsRepository;
+    }
 
     public UserSettingsResponseBody findSettingsByUserId(Integer userId) {
         return new UserSettingsResponseBody(

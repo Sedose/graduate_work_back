@@ -45,9 +45,11 @@ dependencies {
             'org.projectlombok:lombok',
             'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
-    testImplementation(
-            'org.springframework.boot:spring-boot-starter-test'
-    )
+    testImplementation 'org.springframework.boot:spring-boot-starter-test',
+            'io.kotest:kotest-runner-junit5:4.6.0',
+            'io.kotest:kotest-assertions-core-jvm:4.6.0',
+            'io.kotest:kotest-property-jvm:4.6.0',
+            'io.mockk:mockk:1.11.0'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
