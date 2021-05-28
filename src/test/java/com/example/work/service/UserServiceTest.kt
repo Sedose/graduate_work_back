@@ -17,94 +17,73 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
-class UserServiceTest : StringSpec({
+class UserServiceTest : StringSpec() {
 
-    val commonMapper = mockk<CommonMapper>()
-    val userSettingsRepository = mockk<UserSettingsRepository>(
-        relaxUnitFun = true
-    )
-    val target = UserService(
-        commonMapper,
-        userSettingsRepository,
-    )
-
-    "test findSettingsByUserId()" {
-        //given
-        val userId = 1
-
-        every {
-            userSettingsRepository.findUserSettingsByUserId(userId)
-        } returns userSettingsTestData
-
-        every {
-            commonMapper.mapToUserSettingResponseBodyPartList(userSettingsTestData)
-        } returns userSettingsResponseBodiesTestData
-
-        //when
-        val actual = target.findSettingsByUserId(userId)
-
-        //then
-        val expected = UserSettingsResponseBody(userSettingsResponseBodiesTestData)
-
-        actual shouldBeEqualToComparingFields expected
-    }
-
-    "test updateUserSettings()" {
-        //when
-        target.updateUserSettings(
-            userSettingsRequestBodyTestData,
-            securityUserTestData,
+    init {
+        val commonMapper = mockk<CommonMapper>()
+        val userSettingsRepository = mockk<UserSettingsRepository>(
+            relaxUnitFun = true
+        )
+        val target = UserService(
+            commonMapper,
+            userSettingsRepository,
         )
 
-        //then
-        verify(
-            exactly = userSettingsRequestBodyTestData.userSettings.size
-        ) {
-            userSettingsRepository.updateUserSettingsByUserId(
-                settingCode = any(),
-                settingValueNew = any(),
-                userId = any(),
+        "test findSettingsByUserId()" {
+            //given
+            val userId = 1
+
+            every {
+                userSettingsRepository.findUserSettingsByUserId(userId)
+            } returns userSettingsTestData
+
+            every {
+                commonMapper.mapToUserSettingResponseBodyPartList(userSettingsTestData)
+            } returns userSettingsResponseBodiesTestData
+
+            //when
+            val actual = target.findSettingsByUserId(userId)
+
+            //then
+            val expected = UserSettingsResponseBody(userSettingsResponseBodiesTestData)
+
+            actual shouldBeEqualToComparingFields expected
+        }
+
+        "test updateUserSettings()" {
+            //when
+            target.updateUserSettings(
+                userSettingsRequestBodyTestData,
+                securityUserTestData,
             )
+
+            //then
+            verify(
+                exactly = userSettingsRequestBodyTestData.userSettings.size
+            ) {
+                userSettingsRepository.updateUserSettingsByUserId(
+                    settingCode = any(),
+                    settingValueNew = any(),
+                    userId = any(),
+                )
+            }
         }
     }
-})
 
-val userSettingsTestData = listOf(
-    UserSettingsEntity(
-        "code1",
-        "description1",
-        "value1",
-        "defaultValue1"
-    ),
-    UserSettingsEntity(
-        "code2",
-        "description2",
-        "value2",
-        "defaultValue2"
-    ),
-    UserSettingsEntity(
-        "code3",
-        "description3",
-        "value3",
-        "defaultValue3"
-    ),
-)
-
-val userSettingsResponseBodiesTestData =
-    listOf(
-        UserSettingResponseBodyPart(
+    private val userSettingsTestData = listOf(
+        UserSettingsEntity(
             "code1",
             "description1",
             "value1",
             "defaultValue1"
         ),
-        UserSettingResponseBodyPart(
+        UserSettingsEntity(
             "code2",
             "description2",
             "value2",
             "defaultValue2"
         ),
-        UserSettingResponseBodyPart(
+        UserSettingsEntity(
             "code3",
             "description3",
             "value3",
@@ -112,28 +91,51 @@ val userSettingsResponseBodiesTestData =
         ),
     )
 
-val userSettingsRequestBodyTestData =
-    UserSettingsRequestBody(
+    private val userSettingsResponseBodiesTestData =
         listOf(
-            UserSettings(
+            UserSettingResponseBodyPart(
                 "code1",
-                "newValue1"
+                "description1",
+                "value1",
+                "defaultValue1"
             ),
-            UserSettings(
+            UserSettingResponseBodyPart(
                 "code2",
-                "newValue2"
+                "description2",
+                "value2",
+                "defaultValue2"
             ),
-            UserSettings(
+            UserSettingResponseBodyPart(
                 "code3",
-                "newValue3"
-            )
-        ),
-    )
+                "description3",
+                "value3",
+                "defaultValue3"
+            ),
+        )
 
-val securityUserTestData = SecurityUser(
-    "username",
-    UserRole.LECTURER,
-    listOf(SimpleGrantedAuthority(Permission.USER_SETTINGS_UPDATE.name)),
-    1,
-    true,
-)
+    private val userSettingsRequestBodyTestData =
+        UserSettingsRequestBody(
+            listOf(
+                UserSettings(
+                    "code1",
+                    "newValue1"
+                ),
+                UserSettings(
+                    "code2",
+                    "newValue2"
+                ),
+                UserSettings(
+                    "code3",
+                    "newValue3"
+                )
+            ),
+        )
+
+    private val securityUserTestData = SecurityUser(
+        "username",
+        UserRole.LECTURER,
+        listOf(SimpleGrantedAuthority(Permission.USER_SETTINGS_UPDATE.name)),
+        1,
+        true,
+    )
+}

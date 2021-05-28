@@ -5,16 +5,16 @@ import com.example.work.controller.response.body.UserSettingsResponseBody;
 import com.example.work.mapper.CommonMapper;
 import com.example.work.repository.UserSettingsRepository;
 import com.example.work.security.SecurityUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    private CommonMapper commonMapper;
-    private UserSettingsRepository userSettingsRepository;
+    @Autowired private CommonMapper commonMapper;
+    @Autowired private UserSettingsRepository userSettingsRepository;
 
-    public UserService() {
-    }
+    public UserService() { }
 
     public UserService(CommonMapper commonMapper, UserSettingsRepository userSettingsRepository) {
         this.commonMapper = commonMapper;

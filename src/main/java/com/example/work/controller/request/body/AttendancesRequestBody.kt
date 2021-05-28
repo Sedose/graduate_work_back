@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull
 @Data
 @NoArgsConstructor
 class AttendancesRequestBody (
-    val attendances: @NotNull MutableList<Attendance>,
+    val attendances: @NotNull List<Attendance>,
     val courseId: @Min(1) Int,
     val registeredTimestamp: @NotNull Date,
 )

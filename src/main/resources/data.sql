@@ -27,12 +27,6 @@ CREATE TABLE users (
     UNIQUE KEY `full_name` (`first_name`, `middle_name`, `last_name`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE user_coordinates (
-    user_id INT UNSIGNED NOT NULL PRIMARY KEY,
-    latitude DOUBLE NOT NULL,
-    longitude DOUBLE NOT NULL
-);
-
 CREATE TABLE students (
     id INT UNSIGNED PRIMARY KEY,
     group_id INT UNSIGNED NOT NULL
@@ -54,31 +48,6 @@ CREATE TABLE student_groups (
     department_id INT UNSIGNED,
     course_number INT UNSIGNED NOT NULL,
     specialty_name VARCHAR(255) NOT NULL
-) ENGINE=InnoDB;
-
-CREATE TABLE lessons (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    start_date TIMESTAMP NOT NULL,
-    end_date TIMESTAMP NOT NULL,
-    latitude DOUBLE,
-    longitude DOUBLE,
-    name VARCHAR(255) NOT NULL,
-    subject VARCHAR(255) NOT NULL,
-    type VARCHAR(255),
-    description TEXT NOT NULL
-) ENGINE=InnoDB;
-
-CREATE TABLE lessons_student_groups (
-    lesson_id INT UNSIGNED,
-    student_group_id INT UNSIGNED,
-    PRIMARY KEY (lesson_id, student_group_id)
-) ENGINE=InnoDB;
-
-CREATE TABLE lessons_students (
-    lesson_id INT UNSIGNED,
-    student_id INT UNSIGNED,
-    status VARCHAR(255), -- e.g. ATTENDED | LEFT_BEFORE_LESSON_END
-    PRIMARY KEY (lesson_id, student_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE university (
@@ -154,26 +123,6 @@ ON UPDATE RESTRICT ON DELETE RESTRICT;
 ALTER TABLE university_employees
 ADD FOREIGN KEY (id) REFERENCES users(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-ALTER TABLE lessons_student_groups
-ADD FOREIGN KEY (lesson_id) REFERENCES lessons(id)
-ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE lessons_student_groups
-ADD FOREIGN KEY (student_group_id) REFERENCES student_groups(id)
-ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE lessons_students
-ADD FOREIGN KEY (lesson_id) REFERENCES lessons(id)
-ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE lessons_students
-ADD FOREIGN KEY (student_id) REFERENCES students(id)
-ON UPDATE CASCADE ON DELETE CASCADE;
-
-ALTER TABLE user_coordinates
-ADD FOREIGN KEY (user_id) REFERENCES users(id)
-ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE user_attendances
 ADD FOREIGN KEY (user_id) REFERENCES users(id)
@@ -387,11 +336,6 @@ INSERT INTO students VALUES
 (17, 1),
 (18, 1),
 (19, 1);
-
-INSERT INTO user_coordinates VALUES
-(1, 49.999761199999995, 36.2435298),
-(2, 49.999761199999995, 36.2435298),
-(3, 49.999761199999995, 36.2435298);
 
 INSERT INTO `settings` VALUES
 ('MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 'Sets the minimum period in seconds between 2 file uploads for user', '3600');
