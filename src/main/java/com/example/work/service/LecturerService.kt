@@ -42,11 +42,6 @@ class LecturerService(
         attendancesRequestBody: AttendancesRequestBody,
         lecturerIdRegisteredBy: Int
     ) {
-        val distinctAttendances = attendancesRequestBody.attendances
-            .filterNot { it.fullName.isNullOrBlank() }
-            .groupBy { it.fullName }
-            .filterNot { it.value.last().userAction == "Ушел" }
-            .map { it.value.first() }
         val now = attendancesRequestBody.registeredTimestamp.toInstant()
         val was = studentAttendancesRepository.findMaxByRegisteredTimestampAndRegisteredBy(lecturerIdRegisteredBy)
         val userSettingMinFileUploadPeriodValueInSeconds = Duration.ofSeconds(
@@ -59,13 +54,21 @@ class LecturerService(
         }
         studentAttendancesRepository.saveAll(
             toAttendanceEntities(
-                distinctAttendances,
+                findDistinctAttendances(attendancesRequestBody),
                 attendancesRequestBody.courseId,
                 attendancesRequestBody.registeredTimestamp,
                 lecturerIdRegisteredBy
             )
         )
     }
+
+    private fun findDistinctAttendances(
+        attendancesRequestBody: AttendancesRequestBody,
+    ) = attendancesRequestBody.attendances
+        .filterNot { it.fullName.isNullOrBlank() }
+        .groupBy { it.fullName }
+        .filterNot { it.value.last().userAction == "Ушел" }
+        .map { it.value.first() }
 
     private fun toAttendanceEntities(
         attendances: List<Attendance>,
