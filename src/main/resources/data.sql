@@ -3,6 +3,7 @@ SET @course_algo_1_description = "This specialization is a mix of theory and pra
 
 DROP TABLE IF EXISTS lessons_students;
 DROP TABLE IF EXISTS lessons_student_groups;
+DROP TABLE IF EXISTS max_attendances;
 DROP TABLE IF EXISTS student_groups;
 DROP TABLE IF EXISTS user_coordinates;
 DROP TABLE IF EXISTS user_attendances;
@@ -92,8 +93,23 @@ CREATE TABLE `users_settings`(
     `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE `max_attendances`(
+    `student_group_id` INT UNSIGNED,
+    `course_id` INT UNSIGNED,
+    `max_attendances` INT UNSIGNED,
+    PRIMARY KEY (`student_group_id`, `course_id`)
+) ENGINE=InnoDB;
+
 ALTER TABLE users_settings
 ADD FOREIGN KEY (code) REFERENCES settings(code)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+ALTER TABLE `max_attendances`
+ADD FOREIGN KEY (student_group_id) REFERENCES student_groups(id)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+ALTER TABLE `max_attendances`
+ADD FOREIGN KEY (course_id) REFERENCES courses(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ALTER TABLE users_settings
@@ -143,7 +159,9 @@ ON UPDATE RESTRICT ON DELETE RESTRICT;
 INSERT INTO users VALUES(
     1,
     'Edharezenva.Avuzi@cs.khpi.edu.ua',
-    'LECTURER',
+#     'LECTURER',
+#     'STUDENT',
+    'TRAINING_REPRESENTATIVE',
     'ACTIVE',
     NULL,
     NULL,
@@ -341,3 +359,9 @@ INSERT INTO `settings` VALUES
 ('MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 'Sets the minimum period in seconds between 2 file uploads for user', '3600');
 INSERT INTO `users_settings` VALUES
 ('MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 1, '3600');
+
+INSERT INTO `max_attendances` VALUES
+    (1, 1, 100),
+    (2, 2, 150),
+    (3, 2, 200)
+;
