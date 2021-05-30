@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
-@Table("courses")
+@Table("student_groups")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentGroupEntity {
     @Id

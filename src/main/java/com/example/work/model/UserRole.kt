@@ -5,17 +5,28 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 enum class UserRole(private val permissions: Set<Permission>) {
     TRAINING_REPRESENTATIVE(
         setOf(
-            Permission.DEVELOPERS_READ,
+            Permission.COURSES_READ,
+            Permission.STUDENT_GROUPS_READ,
+            Permission.USER_SETTINGS_UPDATE,
+            Permission.USER_SETTINGS_READ,
+            Permission.COURSES_READ,
+            Permission.ATTENDANCES_REPORT_READ,
         ),
     ),
-    LECTURER(setOf(
-            Permission.DEVELOPERS_READ,
-            Permission.DEVELOPERS_WRITE,
+    LECTURER(
+        setOf(
+            Permission.USER_SETTINGS_UPDATE,
+            Permission.USER_SETTINGS_READ,
             Permission.COURSES_READ,
-    )),
-    STUDENT(setOf(
-            Permission.DEVELOPERS_READ,
-    ));
+            Permission.ATTENDANCES_WRITE
+        )
+    ),
+    STUDENT(
+        setOf(
+            Permission.USER_SETTINGS_UPDATE,
+            Permission.USER_SETTINGS_READ,
+        )
+    );
 
     val authorities: Set<SimpleGrantedAuthority>
         get() = permissions

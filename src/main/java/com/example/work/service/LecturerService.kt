@@ -2,19 +2,16 @@ package com.example.work.service
 
 import com.example.work.controller.request.body.Attendance
 import com.example.work.controller.request.body.AttendancesRequestBody
-import lombok.RequiredArgsConstructor
-import lombok.experimental.FieldDefaults
 import com.example.work.repository.CoursesRepo
 import com.example.work.mapper.CommonMapper
-import com.example.work.controller.response.body.CoursesModel
+import com.example.work.response.body.CoursesModel
 import com.example.work.entity.AttendanceEntity
 import com.example.work.entity.UserSettingCode
 import com.example.work.exception.ErrorCode
 import com.example.work.exception.GeneralException
-import com.example.work.repository.StudentAttendancesRepository
+import com.example.work.repository.AttendancesRepository
 import com.example.work.repository.UserRepository
 import com.example.work.repository.UserSettingsRepository
-import lombok.AccessLevel
 import lombok.AllArgsConstructor
 import lombok.ToString
 import org.springframework.stereotype.Service
@@ -25,7 +22,7 @@ import java.util.*
 class LecturerService(
     private val coursesRepo: CoursesRepo,
     private val commonMapper: CommonMapper,
-    private val studentAttendancesRepository: StudentAttendancesRepository,
+    private val attendancesRepository: AttendancesRepository,
     private val userSettingsRepository: UserSettingsRepository,
     private val userRepository: UserRepository,
 ) {
@@ -43,7 +40,7 @@ class LecturerService(
         lecturerIdRegisteredBy: Int
     ) {
         val now = attendancesRequestBody.registeredTimestamp.toInstant()
-        val was = studentAttendancesRepository.findMaxByRegisteredTimestampAndRegisteredBy(lecturerIdRegisteredBy)
+        val was = attendancesRepository.findMaxByRegisteredTimestampAndRegisteredBy(lecturerIdRegisteredBy)
         val userSettingMinFileUploadPeriodValueInSeconds = Duration.ofSeconds(
             userSettingsRepository.findByCode(
                 UserSettingCode.MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL.name
@@ -52,7 +49,7 @@ class LecturerService(
         if (was != null && Duration.between(was, now) < userSettingMinFileUploadPeriodValueInSeconds) {
             throw GeneralException(ErrorCode.TOO_FREQUENT_FILE_UPLOADS)
         }
-        studentAttendancesRepository.saveAll(
+        attendancesRepository.saveAll(
             toAttendanceEntities(
                 findDistinctAttendances(attendancesRequestBody),
                 attendancesRequestBody.courseId,
@@ -64,11 +61,16 @@ class LecturerService(
 
     private fun findDistinctAttendances(
         attendancesRequestBody: AttendancesRequestBody,
-    ) = attendancesRequestBody.attendances
-        .filterNot { it.fullName.isNullOrBlank() }
-        .groupBy { it.fullName }
-        .filterNot { it.value.last().userAction == "Ушел" }
-        .map { it.value.first() }
+    ) = attendancesRequestBody.attendances.asSequence()
+        .filterNot {
+            it.fullName.isNullOrBlank()
+        }.groupBy {
+            it.fullName
+        }.filterNot {
+            it.value.last().userAction == "Ушел"
+        }.map {
+            it.value.first()
+        }
 
     private fun toAttendanceEntities(
         attendances: List<Attendance>,

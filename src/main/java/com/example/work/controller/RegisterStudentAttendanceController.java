@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ public class RegisterStudentAttendanceController {
 
     private final LecturerService lecturerService;
 
+    @PreAuthorize("hasAuthority('attendances:write')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> registerAttendanceUsingFile(
             @Valid @RequestBody AttendancesRequestBody attendancesRequestBody,

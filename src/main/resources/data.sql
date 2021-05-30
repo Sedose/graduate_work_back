@@ -96,7 +96,7 @@ CREATE TABLE `users_settings`(
 CREATE TABLE `max_attendances`(
     `student_group_id` INT UNSIGNED,
     `course_id` INT UNSIGNED,
-    `max_attendances` INT UNSIGNED,
+    `value` INT UNSIGNED,
     PRIMARY KEY (`student_group_id`, `course_id`)
 ) ENGINE=InnoDB;
 
@@ -148,13 +148,14 @@ ALTER TABLE user_attendances
 ADD FOREIGN KEY (course_id) REFERENCES courses(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+ALTER TABLE user_attendances
+ADD FOREIGN KEY (registered_by) REFERENCES university_employees(id)
+ON UPDATE RESTRICT ON DELETE RESTRICT;
+
 ALTER TABLE courses
 ADD FOREIGN KEY (lecturer_id) REFERENCES university_employees(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
-ALTER TABLE user_attendances
-ADD FOREIGN KEY (registered_by) REFERENCES university_employees(id)
-ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 INSERT INTO users VALUES(
     1,
@@ -163,43 +164,43 @@ INSERT INTO users VALUES(
 #     'STUDENT',
     'TRAINING_REPRESENTATIVE',
     'ACTIVE',
-    NULL,
-    NULL,
-    NULL
+    'Edhar Ezenva',
+    '',
+    'Avuzi'
 ),
 (
     2,
     'alexandra@gmail.com',
     'STUDENT',
     'ACTIVE',
-    NULL,
-    NULL,
-    NULL
+    'Алекса',
+    'Степановна',
+    'Бородач'
 ),
 (
     3,
     'lamborghini@gmail.com',
     'STUDENT',
     'ACTIVE',
-    NULL,
-    NULL,
-    NULL
+    'Евгений',
+    'Дмитриевич',
+    'Голошляпко'
 ),(
     4,
     'always_lecturer@gmail.com',
     'STUDENT',
     'ACTIVE',
-    NULL,
-    NULL,
-    NULL
+    'Анастасия',
+    'Валерьевна',
+    'Здобувач'
 ),(
     5,
     'somonto@gmail.com',
     'TRAINING_REPRESENTATIVE',
     'ACTIVE',
-    NULL,
-    NULL,
-    NULL
+    'Анатолій',
+    'Петрович',
+    'Павленко'
 ),
 
 (
@@ -339,20 +340,20 @@ INSERT INTO students VALUES
 (2, 2),
 (3, 3),
 (4, 1),
-(5, 1),
-(6, 1),
+(5, 2),
+(6, 3),
 (7, 1),
-(8, 1),
-(9, 1),
+(8, 2),
+(9, 3),
 (10, 1),
-(11, 1),
-(12, 1),
+(11, 2),
+(12, 3),
 (13, 1),
-(14, 1),
-(15, 1),
+(14, 2),
+(15, 3),
 (16, 1),
-(17, 1),
-(18, 1),
+(17, 2),
+(18, 3),
 (19, 1);
 
 INSERT INTO `settings` VALUES

@@ -2,30 +2,21 @@ package com.example.work.service
 
 import com.example.work.controller.request.body.Attendance
 import com.example.work.controller.request.body.AttendancesRequestBody
-import com.example.work.controller.request.body.UserSettings
-import com.example.work.controller.request.body.UserSettingsRequestBody
-import com.example.work.controller.response.body.UserSettingResponseBodyPart
-import com.example.work.controller.response.body.UserSettingsResponseBody
-import com.example.work.entity.UserSettingsEntity
-import com.example.work.mapper.CommonMapper
 import com.example.work.model.Permission
 import com.example.work.model.UserRole
-import com.example.work.repository.StudentAttendancesRepository
+import com.example.work.repository.AttendancesRepository
 import com.example.work.repository.UserRepository
 import com.example.work.repository.UserSettingsRepository
 import com.example.work.security.SecurityUser
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.equality.shouldBeEqualToComparingFields
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.*
 
 class StudentServiceTest : StringSpec() {
 
     init {
-        val studentAttendancesRepository = mockk<StudentAttendancesRepository>()
+        val studentAttendancesRepository = mockk<AttendancesRepository>()
         val userSettingsRepository = mockk<UserSettingsRepository>(
             relaxUnitFun = true
         )

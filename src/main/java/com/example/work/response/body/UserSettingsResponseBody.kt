@@ -1,4 +1,4 @@
-package com.example.work.controller.response.body
+package com.example.work.response.body
 
 class UserSettingsResponseBody (
     val userSettings: List<UserSettingResponseBodyPart>

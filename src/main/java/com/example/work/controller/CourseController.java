@@ -1,6 +1,6 @@
 package com.example.work.controller;
 
-import com.example.work.controller.response.body.CoursesModel;
+import com.example.work.response.body.CoursesModel;
 import com.example.work.service.LecturerService;
 import com.example.work.security.SecurityUser;
 import lombok.RequiredArgsConstructor;

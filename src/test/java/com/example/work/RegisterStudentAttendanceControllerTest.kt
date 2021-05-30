@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc
 
 class RegisterStudentAttendanceControllerTest {
 
-    @Test fun shouldFuckingWork() {
+    @Test fun shouldWork() {
         assertThat(1 + 2).isEqualTo(4)
     }
 }

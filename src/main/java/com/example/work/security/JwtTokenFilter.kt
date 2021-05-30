@@ -23,7 +23,7 @@ class JwtTokenFilter(
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         request as HttpServletRequest
         val requestPath = request.requestURI.substring(request.contextPath.length)
-        println("Securing fucking path: $requestPath")
+        println("Securing path: $requestPath")
         resolveToken(request)?.let { token ->
             runCatching {
                 getAuthentication(token).let {

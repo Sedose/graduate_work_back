@@ -18,7 +18,10 @@ public class GeolocationRestController {
     private final GeolocationService geolocationService;
 
     @PutMapping
-    public void updateLocation(@RequestBody CoordinatesRequestBody coordinatesRequestBody, Authentication authentication) {
+    public void updateLocation(
+            @RequestBody CoordinatesRequestBody coordinatesRequestBody,
+            Authentication authentication
+    ) {
         geolocationService.updateLocation(coordinatesRequestBody, ((SecurityUser)authentication.getPrincipal()).getId());
     }
 }

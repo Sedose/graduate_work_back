@@ -1,7 +1,7 @@
 package com.example.work.service;
 
 import com.example.work.controller.request.body.UserSettingsRequestBody;
-import com.example.work.controller.response.body.UserSettingsResponseBody;
+import com.example.work.response.body.UserSettingsResponseBody;
 import com.example.work.mapper.CommonMapper;
 import com.example.work.repository.UserSettingsRepository;
 import com.example.work.security.SecurityUser;

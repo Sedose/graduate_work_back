@@ -1,7 +1,7 @@
 package com.example.work.mapper;
 
-import com.example.work.controller.response.body.Course;
-import com.example.work.controller.response.body.UserSettingResponseBodyPart;
+import com.example.work.response.body.Course;
+import com.example.work.response.body.UserSettingResponseBodyPart;
 import com.example.work.entity.CourseEntity;
 import com.example.work.entity.UserSettingsEntity;
 import org.mapstruct.Mapper;
