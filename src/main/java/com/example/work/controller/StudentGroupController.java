@@ -5,6 +5,7 @@ import com.example.work.service.TrainingRepresentativeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,5 +20,13 @@ public class StudentGroupController {
     @PreAuthorize("hasAuthority('student-groups:read')")
     Iterable<StudentGroupEntity> getStudentGroups() {
         return trainingRepresentativeService.findAllStudentGroups();
+    }
+
+    @GetMapping("{groupId}")
+    @PreAuthorize("hasAuthority('student-groups:read')")
+    StudentGroupEntity getStudentGroupById(
+            @PathVariable Integer groupId
+    ) {
+        return trainingRepresentativeService.findStudentGroupById(groupId);
     }
 }

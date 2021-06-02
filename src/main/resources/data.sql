@@ -160,9 +160,9 @@ ON UPDATE RESTRICT ON DELETE RESTRICT;
 INSERT INTO users VALUES(
     1,
     'Edharezenva.Avuzi@cs.khpi.edu.ua',
-#     'LECTURER',
+     'LECTURER',
 #     'STUDENT',
-    'TRAINING_REPRESENTATIVE',
+#    'TRAINING_REPRESENTATIVE',
     'ACTIVE',
     'Edhar Ezenva',
     '',
@@ -187,11 +187,11 @@ INSERT INTO users VALUES(
     'Голошляпко'
 ),(
     4,
-    'always_lecturer@gmail.com',
+    'always_student@gmail.com',
     'STUDENT',
     'ACTIVE',
-    'Анастасия',
-    'Валерьевна',
+    'Анастасія',
+    'Валеріївна',
     'Здобувач'
 ),(
     5,

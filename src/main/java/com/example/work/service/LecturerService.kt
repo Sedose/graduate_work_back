@@ -4,7 +4,6 @@ import com.example.work.controller.request.body.Attendance
 import com.example.work.controller.request.body.AttendancesRequestBody
 import com.example.work.repository.CoursesRepo
 import com.example.work.mapper.CommonMapper
-import com.example.work.response.body.CoursesModel
 import com.example.work.entity.AttendanceEntity
 import com.example.work.entity.UserSettingCode
 import com.example.work.exception.ErrorCode
@@ -12,6 +11,7 @@ import com.example.work.exception.GeneralException
 import com.example.work.repository.AttendancesRepository
 import com.example.work.repository.UserRepository
 import com.example.work.repository.UserSettingsRepository
+import com.example.work.response.body.Course
 import lombok.AllArgsConstructor
 import lombok.ToString
 import org.springframework.stereotype.Service
@@ -27,13 +27,9 @@ class LecturerService(
     private val userRepository: UserRepository,
 ) {
 
-    fun retrieveAllCoursesByLecturerId(id: Int): CoursesModel {
-        return CoursesModel(
-            commonMapper.map(
-                coursesRepo.findAllByLecturerId(id)
-            )
-        )
-    }
+    fun retrieveAllCoursesByLecturerId(id: Int): List<Course> = commonMapper.map(
+        coursesRepo.findAllByLecturerId(id)
+    )
 
     fun registerAttendanceUsingFile(
         attendancesRequestBody: AttendancesRequestBody,
@@ -57,6 +53,15 @@ class LecturerService(
                 lecturerIdRegisteredBy
             )
         )
+    }
+
+    fun findCourseById(courseId: Int): Course? {
+        val course = coursesRepo.findById(courseId)
+        return if (course.isPresent) {
+            commonMapper.map(course.get())
+        } else {
+            null
+        }
     }
 
     private fun findDistinctAttendances(
@@ -83,7 +88,7 @@ class LecturerService(
                 it,
                 courseId,
                 registeredTimestamp,
-                lecturerId
+                lecturerId,
             )
         }
     }
@@ -99,7 +104,7 @@ class LecturerService(
         retrieveUserIdFromFullName(attendance.fullName!!),
         courseId,
         lecturerId,
-        registeredTimestamp
+        registeredTimestamp,
     )
 
     @Throws(GeneralException::class)
@@ -118,22 +123,23 @@ class LecturerService(
         return User(
             toStringOrNull(splitFullName[0]),
             toStringOrNull(splitFullName[1]),
-            toStringOrNull(splitFullName[2])
+            toStringOrNull(splitFullName[2]),
         )
     }
 
     private fun toStringOrNull(partOfFullName: String) =
         partOfFullName.takeUnless { it == "_" }
 
+
     @ToString
     @AllArgsConstructor
-    internal class User (
+    internal class User(
         val firstName: String?,
         val middleName: String?,
         val lastName: String?,
     )
 
-    internal class DistinctAttendance (
+    internal class DistinctAttendance(
         val fullName: String,
         val userActions: List<String>,
         val timestamp: String,

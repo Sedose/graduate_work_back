@@ -42,5 +42,5 @@ interface AttendancesRepository : CrudRepository<AttendanceEntity, Int> {
     fun findMaxAttendances(
         studentGroupId: Int,
         courseId: Int,
-    ): Int
+    ): Int?
 }

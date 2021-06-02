@@ -1,14 +1,14 @@
 package com.example.work.controller;
 
-import com.example.work.response.body.CoursesModel;
-import com.example.work.service.LecturerService;
+import com.example.work.response.body.Course;
 import com.example.work.security.SecurityUser;
+import com.example.work.service.LecturerService;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +21,14 @@ public class CourseController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('courses:read')")
-    ResponseEntity<CoursesModel> fetchAllCourses(Authentication authentication) {
-        val securityUser = (SecurityUser)authentication.getPrincipal();
+    ResponseEntity<Iterable<Course>> getAllCourses(Authentication authentication) {
+        var securityUser = (SecurityUser) authentication.getPrincipal();
         return ResponseEntity.ok(lecturerService.retrieveAllCoursesByLecturerId(securityUser.getId()));
+    }
+
+    @GetMapping("/{courseId}")
+    @PreAuthorize("hasAuthority('courses:read')")
+    ResponseEntity<Course> getCourse(@PathVariable Integer courseId) {
+        return ResponseEntity.ok(lecturerService.findCourseById(courseId));
     }
 }

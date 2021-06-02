@@ -1,8 +1,13 @@
 package com.example.work.response.body
 
-class StudentAttendancesReport (
-    val reportItems: List<ReportItem>
-)
+sealed class StudentAttendancesReport
+
+data class StudentAttendancesReportFull(
+    val items: List<ReportItem>,
+    val lecturerRegisteredBy: LecturerRegisteredBy,
+): StudentAttendancesReport()
+
+object StudentAttendancesReportEmpty : StudentAttendancesReport()
 
 class ReportItem(
     val email: String,
@@ -10,4 +15,10 @@ class ReportItem(
     val middleName: String?,
     val lastName: String?,
     val attendancesPercent: Int,
+)
+
+class LecturerRegisteredBy(
+    val firstName: String,
+    val middleName: String,
+    val lastName: String,
 )

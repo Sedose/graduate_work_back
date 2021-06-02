@@ -1,16 +1,19 @@
 package com.example.work.service
 
 import com.example.work.entity.StudentGroupEntity
+import com.example.work.mapper.CommonMapper
 import com.example.work.repository.AttendancesRepository
 import com.example.work.repository.StudentGroupsRepository
-import com.example.work.response.body.ReportItem
-import com.example.work.response.body.StudentAttendancesReport
+import com.example.work.repository.UserRepository
+import com.example.work.response.body.*
 import org.springframework.stereotype.Service
 
 @Service
 open class TrainingRepresentativeService(
     private val studentGroupsRepository: StudentGroupsRepository,
     private val attendancesRepository: AttendancesRepository,
+    private val userRepository: UserRepository,
+    private val commonMapper: CommonMapper,
 ) {
 
     fun findAllStudentGroups(): MutableIterable<StudentGroupEntity> =
@@ -19,6 +22,7 @@ open class TrainingRepresentativeService(
     fun formStudentAttendancesReportByGroupIdAndCourseId(
         studentGroupId: Int,
         courseId: Int,
+        lecturerIdRegisteredBy: Long,
     ): StudentAttendancesReport {
         val studentsByGroup =
             studentGroupsRepository.findGroupStudents(studentGroupId)
@@ -26,20 +30,31 @@ open class TrainingRepresentativeService(
             studentGroupId,
             courseId,
         )
-        return StudentAttendancesReport(
-            studentsByGroup.map {
-                ReportItem(
-                    it.email,
-                    it.firstName,
-                    it.lastName,
-                    it.middleName,
-                    findAttendancesPercent(
-                        it.id,
-                        courseId,
-                        maxAttendances,
+        return if (maxAttendances == null) {
+            StudentAttendancesReportEmpty
+        } else {
+            StudentAttendancesReportFull(
+                studentsByGroup.map {
+                    ReportItem(
+                        it.email,
+                        it.firstName,
+                        it.lastName,
+                        it.middleName,
+                        findAttendancesPercent(
+                            it.id,
+                            courseId,
+                            maxAttendances,
+                        )
                     )
-                )
-            }
+                },
+                findRegisteredByLecturer(lecturerIdRegisteredBy)
+            )
+        }
+    }
+
+    private fun findRegisteredByLecturer(lecturerIdRegisteredBy: Long): LecturerRegisteredBy {
+        return commonMapper.map(
+            userRepository.findById(lecturerIdRegisteredBy).orElseThrow()
         )
     }
 
@@ -53,4 +68,7 @@ open class TrainingRepresentativeService(
                 courseId,
             ) / maxAttendances.toDouble() * 100
     ).toInt()
+
+    fun findStudentGroupById(groupId: Int): StudentGroupEntity?
+        = studentGroupsRepository.findById(groupId).orElse(null)
 }
