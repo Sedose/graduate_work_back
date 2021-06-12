@@ -39,7 +39,7 @@ class JwtTokenFilter(
 
     private fun sendError(response: ServletResponse) {
         (response as HttpServletResponse).sendError(HttpStatus.FORBIDDEN.value())
-        throw GeneralException("JWT token is expired or invalid", ErrorCode.ACCESS_TOKEN_INVALID)
+        throw GeneralException(ErrorCode.ACCESS_TOKEN_INVALID)
     }
 
     private fun getAuthentication(accessToken: String): Authentication {

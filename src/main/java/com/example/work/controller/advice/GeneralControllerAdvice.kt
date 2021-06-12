@@ -21,7 +21,9 @@ class GeneralControllerAdvice (
     private val map: ErrorCodeToResponseEntityMap
 ) {
     @ExceptionHandler(value = [GeneralException::class])
-    fun handleException(exception: GeneralException) = map.map[exception.code]
+    fun handleException(
+        exception: GeneralException
+    ) = map.map[exception.code]
 }
 
 @Value

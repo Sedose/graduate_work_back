@@ -3,6 +3,7 @@ package com.example.work.service
 import com.example.work.entity.StudentGroupEntity
 import com.example.work.mapper.CommonMapper
 import com.example.work.repository.AttendancesRepository
+import com.example.work.repository.SpecialitiesRepository
 import com.example.work.repository.StudentGroupsRepository
 import com.example.work.repository.UserRepository
 import com.example.work.response.body.*
@@ -12,12 +13,16 @@ import org.springframework.stereotype.Service
 open class TrainingRepresentativeService(
     private val studentGroupsRepository: StudentGroupsRepository,
     private val attendancesRepository: AttendancesRepository,
+    private val specialitiesRepository: SpecialitiesRepository,
     private val userRepository: UserRepository,
     private val commonMapper: CommonMapper,
 ) {
 
-    fun findAllStudentGroups(): MutableIterable<StudentGroupEntity> =
+    fun findAllStudentGroups(): List<StudentGroupEntity> =
         studentGroupsRepository.findAll()
+            .sortedBy {
+                it.name
+            }
 
     fun formStudentAttendancesReportByGroupIdAndCourseId(
         studentGroupId: Int,
@@ -71,4 +76,8 @@ open class TrainingRepresentativeService(
 
     fun findStudentGroupById(groupId: Int): StudentGroupEntity?
         = studentGroupsRepository.findById(groupId).orElse(null)
+
+    fun findAllSpecialities(): Any {
+        TODO("Not yet implemented")
+    }
 }
