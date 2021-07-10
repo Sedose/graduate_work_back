@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @RequiredArgsConstructor
 @Service("userDetailsServiceImpl")
-class UserDetailsServiceImpl(
+open class UserDetailsServiceImpl(
     private val userRepository: UserRepository
 ) : UserDetailsService {
 

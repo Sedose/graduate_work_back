@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Component
 
 @Component
-class JwtConfigurator(
+open class JwtConfigurator(
     private val userDetailsService: UserDetailsService,
 ) : SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
 

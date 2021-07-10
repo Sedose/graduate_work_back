@@ -18,7 +18,7 @@ class ReportItem(
 )
 
 class LecturerRegisteredBy(
-    val firstName: String,
-    val middleName: String,
-    val lastName: String,
+    val firstName: String?,
+    val middleName: String?,
+    val lastName: String?,
 )

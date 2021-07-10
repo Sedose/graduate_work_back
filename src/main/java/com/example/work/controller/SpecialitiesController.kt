@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
 @RequestMapping("/api/specialties")
-class SpecialitiesController(
+open class SpecialitiesController(
     val trainingRepresentativeService: TrainingRepresentativeService,
 ) {
 

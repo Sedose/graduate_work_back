@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 @Setter
 @RestController
 @RequestMapping("api/student-attendances-report")
-internal class StudentAttendancesReportController (
+open class StudentAttendancesReportController (
     @Autowired
     @Qualifier("trainingRepresentativeService")
     private val trainingRepresentativeService: TrainingRepresentativeService,
@@ -24,7 +24,7 @@ internal class StudentAttendancesReportController (
 
     @GetMapping
     @PreAuthorize("hasAuthority('attendances-report:read')")
-    fun getAttendancesReportController(
+    open fun getAttendancesReportController(
         @RequestParam studentGroupId: Int,
         @RequestParam courseId: Int,
         authentication: Authentication,

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/info")
-class InfoController(
+open class InfoController(
     private val userRepository: UserRepository,
 ) {
 

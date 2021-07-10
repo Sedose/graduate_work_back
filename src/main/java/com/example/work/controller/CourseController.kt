@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/courses")
-class CourseController (
+open class CourseController (
     private val lecturerService: LecturerService,
 ) {
 
     @GetMapping
     @PreAuthorize("hasAuthority('courses:read')")
-    fun getAllCourses(authentication: Authentication): ResponseEntity<Iterable<Course>> {
+    open fun getAllCourses(authentication: Authentication): ResponseEntity<Iterable<Course>> {
         val securityUser = authentication.principal as SecurityUser
         return ResponseEntity.ok(
             lecturerService.retrieveAllCoursesByLecturerId(securityUser.id)
@@ -30,7 +30,7 @@ class CourseController (
 
     @GetMapping("/{courseId}")
     @PreAuthorize("hasAuthority('courses:read')")
-    fun getCourse(@PathVariable courseId: Int): ResponseEntity<Course> {
+    open fun getCourse(@PathVariable courseId: Int): ResponseEntity<Course> {
         return ResponseEntity.ok(lecturerService.findCourseById(courseId))
     }
 }

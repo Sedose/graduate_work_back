@@ -182,10 +182,6 @@ ADD FOREIGN KEY (group_id) REFERENCES student_groups(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ALTER TABLE student_groups_courses
-ADD FOREIGN KEY (group_id) REFERENCES student_groups(id)
-ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-ALTER TABLE student_groups_courses
 ADD FOREIGN KEY (course_id) REFERENCES courses(id)
 ON UPDATE RESTRICT ON DELETE RESTRICT;
 
@@ -1141,7 +1137,7 @@ INSERT INTO students VALUES(114, 9);
 ;
 
 INSERT INTO `settings` VALUES
-('MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 'Sets the minimum period in seconds between 2 file uploads for user', '3600');
+('MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 'Встановлює мінімальний проміжок часу в секундах між завантаженням файлу для користувача', '3600');
 INSERT INTO `users_settings` VALUES
 ('MIN_STUDENT_ATTENDANCE_FILE_UPLOAD_INTERVAL', 333, '3600');
 

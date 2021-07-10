@@ -18,8 +18,7 @@ open class UserDetailsController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user-details")
-    @PreAuthorize("hasAuthority('user-details:read')")
-    fun retrieveUserDetailsByToken(authentication: Authentication): UserDetails {
+    open fun retrieveUserDetailsByToken(authentication: Authentication): UserDetails {
         val securityUser = (authentication.principal as SecurityUser)
         return UserDetails(securityUser.userRole.name)
     }

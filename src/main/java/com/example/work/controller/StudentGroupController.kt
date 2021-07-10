@@ -12,18 +12,17 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/student-groups")
-class StudentGroupController (
+open class StudentGroupController (
     private val trainingRepresentativeService: TrainingRepresentativeService
 ) {
 
-    @PreAuthorize("hasAuthority('student-groups:read')")
     @GetMapping
-    fun studentGroups() : List<StudentGroupEntity>
+    @PreAuthorize("hasAuthority('student-groups:read')")
+    open fun studentGroups() : List<StudentGroupEntity>
         = trainingRepresentativeService.findAllStudentGroups()
 
     @GetMapping("{groupId}")
-    @PreAuthorize("hasAuthority('student-groups:read')")
-    fun getStudentGroupById(
+    open fun getStudentGroupById(
         @PathVariable groupId: Int
     ): StudentGroupEntity? {
         return trainingRepresentativeService.findStudentGroupById(groupId)

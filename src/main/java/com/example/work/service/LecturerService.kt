@@ -19,7 +19,7 @@ import java.time.Duration
 import java.util.*
 
 @Service
-class LecturerService(
+open class LecturerService(
     private val coursesRepo: CoursesRepo,
     private val commonMapper: CommonMapper,
     private val attendancesRepository: AttendancesRepository,

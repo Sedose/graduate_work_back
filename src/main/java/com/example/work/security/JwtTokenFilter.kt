@@ -15,7 +15,7 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class JwtTokenFilter(
+open class JwtTokenFilter(
     private val userDetailsService: UserDetailsService,
     private val authHeader: String,
 ) : Filter {
